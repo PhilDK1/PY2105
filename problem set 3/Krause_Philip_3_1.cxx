@@ -44,40 +44,54 @@
 
 using namespace std;
 
-double * Compute_cross_product(double velocity[3],double B_field[3]) {
-	
-	static double vect_product[3];
-	
-	vect_product[0] = ((velocity[1]*B_field[2])- (velocity[2]*B_field[1]));
-	vect_product[1] = -((velocity[0]*B_field[2])- (velocity[2]*B_field[0]));
-	vect_product[2] = ((velocity[0]*B_field[1])- (velocity[1]*B_field[0]));
-	
-	
-	return vect_product;
-	
-	}
 
-
-
+// Main Function
 int main(int argc, char **argv)
 {
-	double vel[3] = {1, 2, 3};
-	double b[3] = {4, 7, 9};
-	double q = 2.0;
-	double *result;
-	double vect_product[3];
-	
-	for (int i =0; i<3; i++) {
-		
-		vect_product[i] = *(result + i) ;
-		
-	}
-	
-	result = Compute_cross_product(vel, b);
-	
-	for (int i =0; i<3; i++) {
-		cout << q * vect_product[i] << endl;
-	}
+	// Initialise variables that will be used in the program
+
+	//Charge 
+	double q;
+	//array for the velocity vector
+	double vel[3];
+	//array for the magnetic field, B
+	double B[3];
+	// array for the vector product of the velocity and and B field, along with the charge
+	double product[3];
+
+	// Get user Input for the velocity Vector
+	cout << "Enter the x value of the velocity: ";
+	cin >> vel[0];
+	cout << "Enter the y value of the velocity: ";
+	cin >> vel[1];
+	cout << "Enter the z value of the velocity: ";
+	cin >> vel[0];
+
+	// Get user Input for the Charge
+	cout << "Enter the charge of the particle: ";
+	cin >> q;
+
+	//Get user input for the Magnetic Field, B
+	cout << "Enter the x value of the Magnetic Field: ";
+	cin >> B[0];
+	cout << "Enter the y value of the Magnetic Field: ";
+	cin >> B[1];
+	cout << "Enter the z value of the Magnetic Field: ";
+	cin >> B[2];
+
+	// Calculate the cross product
+
+	/*
+	*					| i  j  k  |
+	* F = q*vel x B	= 	| vx vy vz | = q(((vy*Bz)-(vz*By))i - ((vx*Bz)-(vz*Bx))j + ((vx*By)-(vy*Bx))k)
+	*					| Bx By Bz |
+	*
+	*/
+
+	product[0] = q*((vel[1]*B[2]) - (vel[2]*B[1]));
+	product[1] = q*((vel[0]*B[2]) - (vel[2]*B[0]));
+	product[2] = q*((vel[0]*B[1]) - (vel[1]*B[0]));
+
+
 	return 0;
 }
-
