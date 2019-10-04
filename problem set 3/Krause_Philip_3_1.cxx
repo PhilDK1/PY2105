@@ -94,9 +94,9 @@ int main(int argc, char **argv)
 	F_[1] = q*((v_[0]*B_[2]) - (v_[2]*B_[0]));
 	F_[2] = q*((v_[0]*B_[1]) - (v_[1]*B_[0]));
 
-	cout << "F_x = " <<F_[0];
-	cout << "F_y = " <<F_[1];
-	cout << "F_z = " <<F_[2];
+	cout << "F_x = " <<F_[0] << endl;
+	cout << "F_y = " <<F_[1] << endl;
+	cout << "F_z = " <<F_[2] << endl;
 	
 
 	return 0;
