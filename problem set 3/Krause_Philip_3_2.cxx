@@ -1,5 +1,7 @@
 /*
  * Philip Krause
+ *
+ * Krause_Philip_3_2.cxx
  * 
  * File that calculates the work done by a 3 dimensional force vector dotted
  * with a 3 dimensional displacement vector

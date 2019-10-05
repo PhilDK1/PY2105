@@ -42,6 +42,7 @@
 #include <unistd.h>
 #include <math.h>
 
+// namespace set up to prevent the need to type "std::" in each place where it would normally be required
 using namespace std;
 
 
