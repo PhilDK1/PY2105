@@ -26,7 +26,7 @@ main() {
     double f_0;
 
     // T the final time
-    int T;
+    double T;
 
     // Capital Omega, _O_ , as a double
     double _O_;
@@ -81,7 +81,7 @@ main() {
 
     // Calculate the time step dt
     dt = T / N;
-
+    cout << dt<< endl;
     // Let initial time be 0
     t[0] = 0.0;
 
