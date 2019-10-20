@@ -81,7 +81,7 @@ main() {
 
     // Calculate the time step dt
     dt = T / N;
-    cout << dt<< endl;
+    
     // Let initial time be 0
     t[0] = 0.0;
 
@@ -100,7 +100,7 @@ main() {
         theta[iter] = theta[iter - 1] + dt*(w[iter]);
     }
 
-    gnuplot_one_function("Lol","linespoints","t", "w", t, w, N);
+    gnuplot_one_function("graph of theta vs time","linespoints","time (sec)", "theta (rad)", t, theta, N);
 
 
     
