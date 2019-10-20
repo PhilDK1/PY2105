@@ -100,13 +100,8 @@ main() {
         theta[iter] = theta[iter - 1] + dt*(w[iter]);
     }
 
-    //gnuplot_one_function("Lol","linespoints","t", "w", t, w, N);
+    gnuplot_one_function("Lol","linespoints","t", "w", t, w, N);
 
 
-    for (int i=0; i < 10 ;i++) {
-        cout << t[i] << endl;
-        cout << w[i] << endl;
-        cout << theta[i] << endl;
-    }
-
+    
 }
