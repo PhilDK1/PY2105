@@ -1,5 +1,5 @@
 /*
-Program to model a dampened driven pendulum
+Program to model a dampened driven pendulum for various parameters
 
 Philip Krause
 118470776
@@ -16,6 +16,7 @@ using namespace std;
 #include <stdarg.h>
 #include <assert.h>
 #include "gnuplot-1.cxx"
+
 
 
 //Main Function
@@ -39,11 +40,7 @@ main() {
     double y;
 
     // N the number of time steps
-    int N;
-
-    // Prompt for N so the next variables are declarable
-    cout << "Enter the number of time steps to be taken: ";
-    cin >> N;
+    int N=300;
 
     // time array, t
     double t[N];
@@ -57,51 +54,107 @@ main() {
     // the time step
     double dt;
 
-    // Prompt for the constants
-    cout << "Enter the driving force: ";
-    cin >> f_0;
 
-    cout << "Enter the final time: ";
-    cin >> T;
 
-    cout << "Enter the value for Capital Omega: ";
-    cin >> _O_;
 
-    cout << "Enter the value for gamma, the dampening: ";
-    cin >> y;
 
-    cout << "Enter the value for the initial angular position: ";
-    cin >> theta[0];
+    // --- Run 1 --- //
 
-    cout << "Enter the value for the initial angular velocity: ";
-    cin >> w[0];
+    // Define variables from run 1
+    T = 10;
+    f_0 = 0;
+    _O_ = 1;
+    theta[0] = 1;
+    w[0] = 0;
 
-    cout << "Enter the value for Omega D:";
-    cin >> _O_D;
+    //Array for the gammas
+    double gamma_array[4] = {0.0, 0.5, 1.0, 1.5};
 
-    // Calculate the time step dt
-    dt = T / N;
+    //so there's no variable undeclared/unassigned warning
+    _O_D = 1;
     
-    // Let initial time be 0
-    t[0] = 0.0;
+    for (int n = 0; n<4;n++) {
+        // Calculate the time step dt
+        dt = T / N;
+        y = gamma_array[n];
 
-    for (int iter = 1; iter < N+1; iter++) {
-        t[iter] = iter*dt;
-        w[iter] = w[iter - 1] 
-                + dt*(
+        //define variable name for the output file
+        // make array of chars big enough to hold entire filename
+        char filename[30];
+        // sprintf allows for the formatting of strings so the file name can be generated on each run
+        sprintf(filename, "Krause_Philip_PS4_a_%.1lf.jpg", gamma_array[n]);
+    
+        // Let initial time be 0
+        t[0] = 0.0;
 
-                -1*(_O_*sin(theta[iter - 1])) 
+        for (int iter = 1; iter < N+1; iter++) {
+            t[iter] = iter*dt;
+            w[iter] = w[iter - 1] 
+                    + dt*(
 
-                - 2*(y*w[iter - 1]) 
+                    -1*(_O_*_O_*sin(theta[iter - 1])) 
 
-                + f_0*cos(_O_D*t[iter])
+                    - 2*(y*w[iter - 1]) 
 
-                );
-        theta[iter] = theta[iter - 1] + dt*(w[iter]);
+                    + f_0*cos(_O_D*t[iter])
+
+                    );
+            theta[iter] = theta[iter - 1] + dt*(w[iter]);
+        }
+
+    gnuplot_one_function_jpg("Graph of θ vs time","linespoints","time (sec)", "θ (rad)", t, theta, N,filename);
     }
 
-    gnuplot_one_function("graph of theta vs time","linespoints","time (sec)", "theta (rad)", t, theta, N);
 
 
+
+
+
+    // --- Run 2 --- //
+
+
+    // Define variables from run 2
+    T = 50;
+    f_0 = 0.5;
+    _O_ = 1;
+    _O_D = 2/3;
+    theta[0] = 0.2;
+    w[0] = 0;
+
+    //Array for the gammas
+    double gamma_array_2[2] = {0.25, 1.0};
     
+    for (int n = 0; n<2;n++) {
+        // Calculate the time step dt
+        dt = T / N;
+        y = gamma_array_2[n];
+
+        //define variable name for the output file
+        // make array of chars big enough to hold entire filename
+        char filename[30];
+        // sprintf allows for the formatting of strings so the file name can be generated on each run
+        sprintf(filename, "Krause_Philip_PS4_b_%.2lf.jpg", gamma_array_2[n]);
+    
+        // Let initial time be 0
+        t[0] = 0.0;
+
+        for (int iter = 1; iter < N+1; iter++) {
+            t[iter] = iter*dt;
+            w[iter] = w[iter - 1] 
+                    + dt*(
+
+                    -1*(_O_*_O_*sin(theta[iter - 1])) 
+
+                    - 2*(y*w[iter - 1]) 
+
+                    + f_0*cos(_O_D*t[iter])
+
+                    );
+            theta[iter] = theta[iter - 1] + dt*(w[iter]);
+        }
+
+    gnuplot_one_function_jpg("Graph of θ vs time","linespoints","time (sec)", "θ (rad)", t, theta, N,filename);
+    }
+
+
 }
