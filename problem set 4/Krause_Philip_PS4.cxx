@@ -87,21 +87,30 @@ main() {
         // Let initial time be 0
         t[0] = 0.0;
 
+        /*  For each iteration the program calculates the current value of the time, angular velocity
+            and theta, in that order to calculate the next one and/or use it for the gnuplot plots
+        */
         for (int iter = 1; iter < N+1; iter++) {
+            // each consecutive entry jumps by some delta t of a timestep
             t[iter] = iter*dt;
+            // w(n+1) = w(n) + timestep*d(w(n))/dt
             w[iter] = w[iter - 1] 
                     + dt*(
-
+                    
+                    // SHM
                     -1*(_O_*_O_*sin(theta[iter - 1])) 
-
+                    
+                    // damping 
                     - 2*(y*w[iter - 1]) 
 
+                    // driving force & frequency
                     + f_0*cos(_O_D*t[iter])
 
                     );
+            // θ(n+1) = θ(n) + timestep*w(n+1)
             theta[iter] = theta[iter - 1] + dt*(w[iter]);
         }
-
+    // use GNUplot to plot the functions as jpgs
     gnuplot_one_function_jpg("Graph of θ vs time","linespoints","time (sec)", "θ (rad)", t, theta, N,filename);
     }
 
@@ -138,21 +147,30 @@ main() {
         // Let initial time be 0
         t[0] = 0.0;
 
+        /*  For each iteration the program calculates the current value of the time, angular velocity
+            and theta, in that order to calculate the next one and/or use it for the gnuplot plots
+        */
         for (int iter = 1; iter < N+1; iter++) {
+            // each consecutive entry jumps by some delta t of a timestep
             t[iter] = iter*dt;
+            // w(n+1) = w(n) + timestep*d(w(n))/dt
             w[iter] = w[iter - 1] 
                     + dt*(
-
+                    
+                    // SHM
                     -1*(_O_*_O_*sin(theta[iter - 1])) 
-
+                    
+                    // damping 
                     - 2*(y*w[iter - 1]) 
 
+                    // driving force & frequency
                     + f_0*cos(_O_D*t[iter])
 
                     );
+            // θ(n+1) = θ(n) + timestep*w(n+1)
             theta[iter] = theta[iter - 1] + dt*(w[iter]);
         }
-
+    // use GNUplot to plot the functions as jpgs
     gnuplot_one_function_jpg("Graph of θ vs time","linespoints","time (sec)", "θ (rad)", t, theta, N,filename);
     }
 
