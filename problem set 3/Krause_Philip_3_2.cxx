@@ -35,24 +35,25 @@ int main(int argc, char **argv) {
 
     // displacement vector, s_
     double s_[3];
+    
+    //direction array
+	char axis[3] = {'x', 'y', 'z'};
+
 
     // Prompt user for the values of x, y and z of Force
-    cout << "Enter the value of Force in the x direction: ";
-    cin >> F_[0];
-    cout << "Enter the value of Force in the y direction: ";
-    cin >> F_[1];
-    cout << "Enter the value of Force in the z direction: ";
-    cin >> F_[2];
-
+    
+    for (int i = 0; i < 3; i++) {
+		cout << "Enter the value of Force in the "<< axis[i] << " direction: ";
+		cin >> F_[i];
+		}
 
     // Prompt user for the values of x, y and z of the displacement
-    cout << "Enter the value of displacement in the x direction: ";
-    cin >> s_[0];
-    cout << "Enter the value of displacement in the y direction: ";
-    cin >> s_[1];
-    cout << "Enter the value of displacement in the z direction: ";
-    cin >> s_[2];
+    for (int i = 0; i<3; i++) {
+		cout << "Enter the value of displacement in the "<< axis[i] <<" direction: ";
+		cin >> s_[i];
+		}
 
+	
     //Calculate the dot product
     W = 0.0;
     for (int i = 0; i < 3; i++) {

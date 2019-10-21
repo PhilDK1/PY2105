@@ -29,18 +29,28 @@ int main(int argc, char **argv) {
 
     // Product vector, V_
     double V_[3];
+    
+    //direction array
+	char axis[3] = {'x', 'y', 'z'};
+	
+	//position array
+	char position[3][3]  = {
+							{'1', 's', 't'},
+							{'2', 'n', 'd'},
+							{'3', 'r', 'd'}
+							};
 
 
     // Get user input for the Vector U_
     for (int i = 0; i < 3; i++) {
-        cout << "Enter the " << i << "th value of the the Vector U_: ";
+        cout << "Enter the " << axis[i] << " value of the the Vector U_: ";
         cin >> U_[i];
     }
 
     // Get user input for the matrix M
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            cout << "Enter the " << j << "th value of the " << i << "th row: ";
+            cout << "Enter the " << position[j][0] << position[j][1] <<  position[j][2] << " value of the " << position[i][0] << position[i][1] <<  position[i][2] << " row: ";
             cin >> M[i][j];
         }
     }

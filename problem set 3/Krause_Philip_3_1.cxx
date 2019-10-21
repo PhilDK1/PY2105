@@ -59,26 +59,26 @@ int main(int argc, char **argv)
 	double B_[3];
 	// array for the vector product of the velocity and and B field, along with the charge force, F_
 	double F_[3];
+	
+	//direction array
+	char axis[3] = {'x', 'y', 'z'};
 
 	// Get user Input for the velocity Vector, v_
-	cout << "Enter the x value of the velocity: ";
-	cin >> v_[0];
-	cout << "Enter the y value of the velocity: ";
-	cin >> v_[1];
-	cout << "Enter the z value of the velocity: ";
-	cin >> v_[0];
+	
+	for (int i = 0; i < 3; i++) {
+		cout << "Enter the " << axis[i] << " value of the velocity: ";
+		cin >> v_[i];
+		}
 
 	// Get user Input for the Charge
 	cout << "Enter the charge of the particle: ";
 	cin >> q;
 
 	//Get user input for the Magnetic Field, B
-	cout << "Enter the x value of the Magnetic Field: ";
-	cin >> B_[0];
-	cout << "Enter the y value of the Magnetic Field: ";
-	cin >> B_[1];
-	cout << "Enter the z value of the Magnetic Field: ";
-	cin >> B_[2];
+	for (int i = 0; i < 3; i++) {
+		cout << "Enter the " << axis[i] << " value of the  Magnetic Field: ";
+		cin >> B_[i];
+		}
 
 	// Calculate the cross product
 
@@ -95,9 +95,11 @@ int main(int argc, char **argv)
 	F_[1] = q*((v_[0]*B_[2]) - (v_[2]*B_[0]));
 	F_[2] = q*((v_[0]*B_[1]) - (v_[1]*B_[0]));
 
-	cout << "F_x = " <<F_[0] << endl;
-	cout << "F_y = " <<F_[1] << endl;
-	cout << "F_z = " <<F_[2] << endl;
+	// print out the answers
+	for (int i = 0; i < 3; i++) {
+		cout << "F_" << axis[i] << " = " <<F_[i] << endl;
+		}
+	
 	
 
 	return 0;
