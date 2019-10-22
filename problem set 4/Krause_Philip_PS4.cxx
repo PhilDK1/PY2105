@@ -174,5 +174,5 @@ main() {
     gnuplot_one_function_jpg("Graph of θ vs time","linespoints","time (sec)", "θ (rad)", t, theta, N,filename);
     }
 
-
+return 0;
 }
