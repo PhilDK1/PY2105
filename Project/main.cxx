@@ -40,15 +40,16 @@ int main() {
     double del_x = graphing_distance/N;
 
     double x = -0.5*graphing_distance;
-    double current_x;
+    double X[N];
     for (int i = 0; i < N; i++) {
-        if (x < L) {
+        X[i] = x;
+        if (x < -1*L) {
             V[i] = V_at_L;
         } else if (x > L){
             V[i] = V_at_L;
             
         } else {
-            V[i] = 0;
+            V[i] = 0.0;
         }
 
         x += del_x;
@@ -58,5 +59,7 @@ int main() {
     cout << -x << endl;
     cout << x << endl;
     
+    gnuplot_one_function_jpg("Test of potential array", "linespoints", "x", "V", X, V, N, "yoy.jpg" );
+
     return 0;
 }
