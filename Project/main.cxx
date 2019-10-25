@@ -21,50 +21,72 @@ using namespace std;
 const double pi = 3.14159265;
 const double sq_pi = pi * pi;
 
+
+
 //Main files
 int main() {
 
     //define variables
-    int N = 1001;
+    int N = 500;
     int mid_point = (N-1)/2;
 
     double phi[N];
 
     double E =sq_pi/8;
     double V[N];
-    double L = 1;
+    double L = 2;
+    double three = 3;
 
     double phi_0 = 1.0;
     double phi_n1 = 1.0;
 
     double offset = 1;
-    double V_at_L = 100;
+    double V_at_L = 100000;
 
-    double graphing_distance = 2*(L+offset);
-    double del_x = graphing_distance/N;
-
-    double x = -0.5*graphing_distance;
+    // double graphing_distance = 2*(L+offset);
+    double del_x = three/N;
+    double x = 0;
     double X[N];
+
+
     for (int i = 0; i < N; i++) {
-        X[i] = x;
-        if (x < -1*L) {
-            V[i] = V_at_L;
-        } else if (x > L){
-            V[i] = V_at_L;
-            
+        X[i] = i*del_x;
+        if (X[i] > L){
+            V[i] = V_at_L;  
         } else {
             V[i] = 0.0;
         }
 
-        x += del_x;
     }
-    phi[mid_point] = phi_0;
-    phi[mid_point - 1] = phi_n1;
-    for (int i = mid_point; i < N; i++) {
+    phi[0] = phi_n1;
+    phi[1] = phi_0;
+    double phi_temp;
+    int count = 2;
+    for (int i = 2; i < N; i++) {
+        phi_temp = 2*phi[i-1] - phi[i-2] - 2*del_x*del_x*(E-V[i-1])*phi[i-1];
+        if (abs(phi_temp) < 1.7) {
+            phi[i] = phi_temp;
+            count++;
+        } else {
+            break;
+        }
+    }
+    cout << count << endl;
+    double mewX[count];
+
+    for (int i = 0; i < count; i++ ) {
+        mewX[i] = X[i];
+    }
+  
+
+/*
+    for (int i = 0; i < N; i++) {
 
     }
-    
-    // gnuplot_one_function_jpg("Test of potential array", "linespoints", "x", "V", X, V, N, "yoy.jpg" );
+*/
+
+     //gnuplot_one_function("Test of potential array", "linespoints", "x", "V", X, V, N);
+    gnuplot_one_function("Test of wave fn array", "linespoints", "x", "phi", mewX, phi, count);
 
     return 0;
 }
