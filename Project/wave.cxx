@@ -87,10 +87,8 @@ double *gen_phi(double *wavefn,
         mid = (mid/2);
     }
     
-    // wavefn[mid] = 2*phi_1 - phi_0 - 2*del_x*del_x*(E - V[mid-1])*phi_1;
     wavefn[mid] = 2 - 1 - 2*del_x*del_x*(E - V[mid-1]);
     wavefn[mid + 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
-    // wavefn[mid - 1] = 2*wavefn[mid] - wavefn[mid + 1] - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
     wavefn[mid - 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
     for (int i = 2; i < mid; i++) {
         phi_temp = 2*wavefn[mid + i - 1] - wavefn[mid + i - 2] - 2*del_x*del_x*(E - V[mid + i - 1])*wavefn[mid + i - 1];
@@ -167,13 +165,6 @@ int main() {
     gen_v(V, X, N, lVstep, rVstep, graphing_distance, VStepPoint_l, VstepPoint_r);
     gen_phi(wavefn, V, X, N, graphing_distance, E[0], cutoff);
 
-    // gnuplot_two_functions("First Test", "linespoints", "X", "Potential", X, V, N, "Wavefn", X, wavefn, N, "Phi");
-    // gnuplot_one_function_jpg("First Test", "linespoints", "X", "wavefn", X, wavefn, N, "first_successful_test.jpg");
-
-    // for (int i = 0; i < N; i++)  {
-    //     cout << "pot at " << X[i] << " : " << V[i] << " & wavefn : ";
-    //     cout << wavefn[i] << "          " << i << endl;
-    // }
     bool cont = true;
     int count = 0;
     char prompt;
