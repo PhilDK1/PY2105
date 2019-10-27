@@ -40,7 +40,7 @@ double* calc(double *V,
         E_0[0] = E_0[0] - del_E[0];
     } else if (last_diverge[0] == 1 && wavefn[size - 5] < 0) {
         // previously diverging up, now divering down, overshot
-        del_E[0] = del_E[0] /2 ;
+        del_E[0] = 2*del_E[0] /3 ;
         E_0[0] = E_0[0] - del_E[0];
     } else if (last_diverge[0] == 1 && wavefn[size - 5] > 0) {
         // Still divering up, energy needs to increase
@@ -51,7 +51,7 @@ double* calc(double *V,
     } else if (last_diverge[0] == -1 && wavefn[size - 5] > 0) {
         // previously diverging down, now diverging up
         // Energy needs to increase
-        del_E[0] = del_E[0]/2;
+        del_E[0] = 2*del_E[0]/3;
         E_0[0] = E_0[0] + del_E[0];
     }
 
@@ -66,11 +66,17 @@ double* calc(double *V,
 
 }
 
+// double integrate(double *wavefn,
+//                  double *X,
+//                  )
+
 
 double *gen_phi(double *wavefn,
                 double *V,
                 double *X,
                 int size,
+                double phi_0,
+                double phi_n1,
                 double graphing_distance, 
                 double E,
                 double cutoff) {
@@ -87,9 +93,9 @@ double *gen_phi(double *wavefn,
         mid = (mid/2);
     }
     
-    wavefn[mid] = 2 - 1 - 2*del_x*del_x*(E - V[mid-1]);
-    wavefn[mid + 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
-    wavefn[mid - 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
+    wavefn[mid] = 2*phi_0 - phi_n1 - 2*del_x*del_x*(E - V[mid-1])*phi_0;
+    wavefn[mid + 1] = 2*wavefn[mid] - phi_0 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
+    wavefn[mid - 1] = 2*wavefn[mid] - phi_0 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
     for (int i = 2; i < mid; i++) {
         phi_temp = 2*wavefn[mid + i - 1] - wavefn[mid + i - 2] - 2*del_x*del_x*(E - V[mid + i - 1])*wavefn[mid + i - 1];
         if (abs(phi_temp) < cutoff) {
@@ -116,7 +122,7 @@ double *gen_phi(double *wavefn,
         
     }
 
-    for (int i = 2; i < mid; i++) {
+    for (int i = 2; i < mid+2; i++) {
         phi_temp = 2*wavefn[mid - i + 1] - wavefn[mid - i + 2] - 2*del_x*del_x*(E - V[mid - i + 1])*wavefn[mid - i + 1];
         if (abs(phi_temp) < cutoff) {
             wavefn[mid - i] = phi_temp;
@@ -147,23 +153,24 @@ double *gen_phi(double *wavefn,
 
 // Main fn
 int main() {
-    int N = 10000;
+    int N = 50000;
     double V[N], X[N], wavefn[N];
-    double graphing_distance = 3;
+    double graphing_distance = 5;
     double E[1];
-    E[0]= 1;
+    E[0]= 4;
     double del_E[1];
     del_E[0] = 0.5;
     double cutoff = 2.5;
-    double lVstep = 40000000;
-    double rVstep = 40000000;
+    double lVstep = 1000;
+    double rVstep = 1000;
     double VStepPoint_l = -1;
     double VstepPoint_r = 1;
     double last_diverge[1];
     last_diverge[0] = 0;
+    double del_x = graphing_distance/N;
 
     gen_v(V, X, N, lVstep, rVstep, graphing_distance, VStepPoint_l, VstepPoint_r);
-    gen_phi(wavefn, V, X, N, graphing_distance, E[0], cutoff);
+    gen_phi(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
 
     bool cont = true;
     int count = 0;
@@ -172,7 +179,7 @@ int main() {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
         cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
-        gen_phi(wavefn, V, X, N, graphing_distance, E[0], cutoff);
+        gen_phi(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
             gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
             cout << "Continue: ";
