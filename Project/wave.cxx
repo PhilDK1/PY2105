@@ -157,8 +157,8 @@ int main() {
     double del_E[1];
     del_E[0] = 0.5;
     double cutoff = 2.5;
-    double lVstep = 400000;
-    double rVstep = 400000;
+    double lVstep = 40000000;
+    double rVstep = 40000000;
     double VStepPoint_l = -1;
     double VstepPoint_r = 1;
     double last_diverge[1];
