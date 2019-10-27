@@ -90,7 +90,8 @@ double *gen_phi(double *wavefn,
     // wavefn[mid] = 2*phi_1 - phi_0 - 2*del_x*del_x*(E - V[mid-1])*phi_1;
     wavefn[mid] = 2 - 1 - 2*del_x*del_x*(E - V[mid-1]);
     wavefn[mid + 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
-    wavefn[mid - 1] = 2*wavefn[mid] - wavefn[mid + 1] - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
+    // wavefn[mid - 1] = 2*wavefn[mid] - wavefn[mid + 1] - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
+    wavefn[mid - 1] = 2*wavefn[mid] - 1 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
     for (int i = 2; i < mid; i++) {
         phi_temp = 2*wavefn[mid + i - 1] - wavefn[mid + i - 2] - 2*del_x*del_x*(E - V[mid + i - 1])*wavefn[mid + i - 1];
         if (abs(phi_temp) < cutoff) {
@@ -126,14 +127,14 @@ double *gen_phi(double *wavefn,
                 // divering up
                 for (int n = 0; n < (mid - i); n++)
                 {
-                    wavefn[mid + i + n] = 2.5;
+                    wavefn[mid - i - n] = 2.5;
                 }
                 break;
             } else if (phi_temp <  0) {
                 // divering down
-                for (int n = 0; n < (mid - i); n++)
+                for (int n = 0; n < ( mid -i); n++)
                 {
-                wavefn[mid + i + n] = -2.5;
+                wavefn[mid - i - n] = -2.5;
                 }
                 break;
             }
@@ -148,7 +149,7 @@ double *gen_phi(double *wavefn,
 
 // Main fn
 int main() {
-    int N = 1001;
+    int N = 10000;
     double V[N], X[N], wavefn[N];
     double graphing_distance = 3;
     double E[1];
@@ -156,8 +157,8 @@ int main() {
     double del_E[1];
     del_E[0] = 0.5;
     double cutoff = 2.5;
-    double lVstep = 4000;
-    double rVstep = 4000;
+    double lVstep = 400000;
+    double rVstep = 400000;
     double VStepPoint_l = -1;
     double VstepPoint_r = 1;
     double last_diverge[1];
