@@ -30,32 +30,32 @@ double* calc(double *V,
             double* del_E, 
             double cutoff) {
     
-    
+    cout << wavefn[size -5] << endl;
 
-    if (last_diverge[0] == 0 && wavefn[size - 1] > 0) {
+    if (last_diverge[0] == 0 && wavefn[size - 5] > 0) {
         // first iteration, diverging up, increase energy
         E_0[0] = E_0[0] + del_E[0];
-    } else if (last_diverge[0] == 0 && wavefn[size - 1] < 0) {
+    } else if (last_diverge[0] == 0 && wavefn[size - 5] < 0) {
         // first iteration, diverging down, decrease energy
         E_0[0] = E_0[0] - del_E[0];
-    } else if (last_diverge[0] == 1 && wavefn[size - 1] < 0) {
+    } else if (last_diverge[0] == 1 && wavefn[size - 5] < 0) {
         // previously diverging up, now divering down, overshot
         del_E[0] = del_E[0] /2 ;
         E_0[0] = E_0[0] - del_E[0];
-    } else if (last_diverge[0] == 1 && wavefn[size - 1] > 0) {
+    } else if (last_diverge[0] == 1 && wavefn[size - 5] > 0) {
         // Still divering up, energy needs to increase
         E_0[0] = E_0[0] + del_E[0];
-    } else if (last_diverge[0] == -1 && wavefn[size - 1] < 0) {
+    } else if (last_diverge[0] == -1 && wavefn[size - 5] < 0) {
         // still diverging downwards, energy needs to decrease
         E_0[0] = E_0[0] - del_E[0];
-    } else if (last_diverge[0] == -1 && wavefn[size - 1] > 0) {
+    } else if (last_diverge[0] == -1 && wavefn[size - 5] > 0) {
         // previously diverging down, now diverging up
         // Energy needs to increase
         del_E[0] = del_E[0]/2;
         E_0[0] = E_0[0] + del_E[0];
     }
 
-    if (wavefn[size - 1] < 0 && abs(wavefn[size - 1]) > cutoff) {
+    if (wavefn[size - 5] < 0 && abs(wavefn[size - 5]) > cutoff) {
         last_diverge[0] = -1;
     } else {
         last_diverge[0] = 1;
@@ -181,8 +181,8 @@ int main() {
         cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
         gen_phi(wavefn, V, X, N, graphing_distance, E[0], cutoff);
-        gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
         if (count % 50 == 0) {
+            gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
             cout << "Continue: ";
         
             cin >> prompt;
