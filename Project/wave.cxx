@@ -176,10 +176,12 @@ double *gen_phi_odd(double *wavefn,
     }
     
     wavefn[mid] = 2*phi_0 - phi_n1 - 2*del_x*del_x*(E - V[mid-1])*phi_0;
-    wavefn[mid + 1] = 2*wavefn[mid] - phi_0 - 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
-    wavefn[mid - 1] = -2*wavefn[mid] + phi_0 + 2*del_x*del_x*(E - V[mid-1])*wavefn[mid];
+    wavefn[mid - 1] = -2*wavefn[mid] + phi_0 + 2*del_x*del_x*(E - V[mid])*wavefn[mid];
+    wavefn[mid + 1] = 2*wavefn[mid] - wavefn[mid-1] - 2*del_x*del_x*(E - V[mid])*wavefn[mid];
+    
+    
     for (int i = 2; i < mid; i++) {
-        phi_temp = 2*wavefn[mid + i - 1] - wavefn[mid + i - 2] - 2*del_x*del_x*(E - V[mid + i - 1])*wavefn[mid + i - 1];
+        phi_temp = 2*wavefn[mid+i-1] - wavefn[mid+i-2] - 2*del_x*del_x*(E - V[mid+i-1])*wavefn[mid+i-1];
         if (abs(phi_temp) < cutoff) {
             wavefn[mid + i] = phi_temp;
         } else {
@@ -204,8 +206,9 @@ double *gen_phi_odd(double *wavefn,
         
     }
 
+    
     for (int i = 2; i < mid+2; i++) {
-        phi_temp = -2*wavefn[mid - i + 1] + wavefn[mid - i + 2] + 2*del_x*del_x*(E - V[mid - i + 1])*wavefn[mid - i + 1];
+        phi_temp = 2*wavefn[mid - i + 1] - wavefn[mid - i + 2] - 2*del_x*del_x*(E - V[mid - i + 1])*wavefn[mid - i + 1];
         if (abs(phi_temp) < cutoff) {
             wavefn[mid - i] = phi_temp;
         } else {
