@@ -29,9 +29,9 @@ int main() {
     double V[N], X[N], wavefn[N];
     double graphing_distance = 5;
     double E[1];
-    E[0]= 100;
+    E[0]= 1;
     double del_E[1];
-    del_E[0] = 4;
+    del_E[0] = 0.5;
     double cutoff = 2.5;
     double Volt = 1000;
     //double rVstep = 1000;
@@ -45,7 +45,7 @@ int main() {
 
     gen_v(V, X, N, Volt, graphing_distance, L);
     // gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
-    gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
+    gen_phi_even(wavefn, V, X, N, 1, 1, graphing_distance, E[0], cutoff);
 
     bool cont = true;
     int count = 0;
@@ -54,7 +54,7 @@ int main() {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
         cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
-        gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
+        gen_phi_even(wavefn, V, X, N, 1, 1, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
             gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
             cout << "Continue: ";
