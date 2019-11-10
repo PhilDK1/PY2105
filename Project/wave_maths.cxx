@@ -34,19 +34,18 @@ double* square(
 double integrate(
         double *sq_wf,
         double *X,
-        double left_L,
-        double right_L,
+        double L,
         int size,
         double del_x) {
     int count = 0;
     int upper = 0;
     // double Sum = 0;
-    while (X[count] < left_L) {
+    while (X[count] < -L) {
         count++;
     }
     count++;
 
-    while (X[upper] < right_L) {
+    while (X[upper] < L) {
         upper++;
     }
     upper--;

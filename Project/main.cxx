@@ -33,17 +33,17 @@ int main() {
     double del_E[1];
     del_E[0] = 4;
     double cutoff = 2.5;
-    double lVstep = 1000;
-    double rVstep = 1000;
-    double VStepPoint_l = -1;
-    double VstepPoint_r = 1;
+    double Volt = 1000;
+    //double rVstep = 1000;
+    double L = 1;
+    //double VstepPoint_r = 1;
     double last_diverge[1];
     last_diverge[0] = 0;
     double del_x = graphing_distance/N;
     double squared_function[N];
     double norm_wf[N];
 
-    gen_v(V, X, N, lVstep, rVstep, graphing_distance, VStepPoint_l, VstepPoint_r);
+    gen_v(V, X, N, Volt, graphing_distance, L);
     // gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
     gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
 
@@ -73,7 +73,7 @@ int main() {
     for (int i = 0; i < N; i++) {
         norm_wf[i] = wavefn[i];
     }
-    double area = integrate(squared_function, X, VStepPoint_l, VstepPoint_r, N, del_x);
+    double area = integrate(squared_function, X, L, N, del_x);
     cout << "ans: " << area << endl;
     Normalise(norm_wf, area, N);
     

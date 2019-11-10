@@ -36,15 +36,13 @@ using namespace std;
 double* gen_v(  double* V,
                 double* X, 
                 int size, 
-                double lV_step, 
-                double rV_step, 
+                double V_L,  
                 double graphing_distance, 
-                double l_step_at, 
-                double r_step_at) {
+                double L) {
     
 
     // check that the graph contains the potential step, and isn't just graphing the potential of 0 inside +/-L
-    if ((abs(l_step_at) + abs(r_step_at)) > graphing_distance) cout << "check points not all in range" << endl;
+    if (abs(2*L) > graphing_distance) cout << "check points not all in range" << endl;
 
     //calculate the space step del_x
     double del_x = graphing_distance/size;
@@ -56,13 +54,13 @@ double* gen_v(  double* V,
         // the start point and each step incriments by del_x
         X[i] = starting + (i*del_x);
         // check if the X value is greater than +L
-        if (X[i] > r_step_at){
+        if (X[i] > L){
             // set the potential to the potential at the point
-            V[i] = rV_step;
+            V[i] = V_L;
         // check if the X value is less than -L
-        } else if (X[i] < l_step_at) { 
+        } else if (X[i] < -L) { 
             // set the potential to the potential at the point
-            V[i] = lV_step;
+            V[i] = V_L;
         // else the x value is between +/- L and is 0
         } else {
             V[i] = 0.0;

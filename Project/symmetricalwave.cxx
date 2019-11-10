@@ -3,6 +3,8 @@
     118470776@umail.ucc.ie
     Project 9 Quantum Assignment
     testing for wave fn
+
+    File to generate wave functions for symmetrical potentials
 */
 
 // Header Files
