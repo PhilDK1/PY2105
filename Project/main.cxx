@@ -18,7 +18,7 @@ using namespace std;
 #include <assert.h>
 #include "gnuplot.cxx"
 #include "potential_fn.cxx"
-#include "wave.cxx"
+#include "symmetricalwave.cxx"
 #include "wave_maths.cxx"
 
 const double pi = 3.14159265;
