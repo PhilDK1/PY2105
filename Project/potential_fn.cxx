@@ -2,7 +2,7 @@
     Philip Krause
     118470776@umail.ucc.ie
     Project 9 Quantum Assignment
-    testing of various functions
+    file for generating symmetrical potentials
 */
 
 // Header Files
