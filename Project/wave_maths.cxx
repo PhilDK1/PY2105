@@ -89,10 +89,18 @@ double integrate(
 
 }
 
+
+// function to normalise the wavefn
 double *Normalise(double *wavefn, double area, double size) {
+    // loop through the indexs upto size
     for (int i = 0; i < size; i++) {
+        /*
+        multiply each value of the wavefn by a constant factor that will satisfy that the probablilty 
+        between two bounds being 1
+        */
         wavefn[i] = (1/(sqrt(area)))*wavefn[i];
     }
+    // return the new wavefunction
     return wavefn;
 }
 
