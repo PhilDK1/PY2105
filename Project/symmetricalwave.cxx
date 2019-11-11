@@ -21,7 +21,7 @@ using namespace std;
 // #include "gnuplot.cxx"
 // #include "potential_fn.cxx"
 
-//calculate fn
+//calculate fn, decides whether the function is diverging and adusts the cahgne in energy accordingly
 double* calc(double *V, 
             double *X, 
             double *wavefn,
@@ -32,8 +32,10 @@ double* calc(double *V,
             double* del_E, 
             double cutoff) {
     
-    cout << wavefn[size -5] << endl;
+    // printiting out the value of the diverging wave
+    // cout << wavefn[size -5] << endl;
 
+    // if-else if ladder to check various conditions and making decisions based on that
     if (last_diverge[0] == 0 && wavefn[size - 5] > 0) {
         // first iteration, diverging up, increase energy
         E_0[0] = E_0[0] + del_E[0];
@@ -42,7 +44,7 @@ double* calc(double *V,
         E_0[0] = E_0[0] - del_E[0];
     } else if (last_diverge[0] == 1 && wavefn[size - 5] < 0) {
         // previously diverging up, now divering down, overshot
-        del_E[0] = 2*del_E[0] /3 ;
+        del_E[0] = del_E[0] /2 ;
         E_0[0] = E_0[0] - del_E[0];
     } else if (last_diverge[0] == 1 && wavefn[size - 5] > 0) {
         // Still divering up, energy needs to increase
@@ -53,16 +55,17 @@ double* calc(double *V,
     } else if (last_diverge[0] == -1 && wavefn[size - 5] > 0) {
         // previously diverging down, now diverging up
         // Energy needs to increase
-        del_E[0] = 2*del_E[0]/3;
+        del_E[0] = del_E[0]/2;
         E_0[0] = E_0[0] + del_E[0];
     }
-
-    if (wavefn[size - 5] < 0 && abs(wavefn[size - 5]) > cutoff) {
+    // check the sign of the last divergence
+    // if lessa than 0 and the absolute value is gr
+    if (wavefn[size - 5] < 0 /*&& abs(wavefn[size - 5]) > cutoff*/) {
         last_diverge[0] = -1;
     } else {
         last_diverge[0] = 1;
     }
-
+    //return the calculated values
     return E_0, del_E, last_diverge;
 
 
@@ -77,12 +80,13 @@ double *gen_phi_even(double *wavefn,
                 double *V,
                 double *X,
                 int size,
-                double phi_0,
-                double phi_n1,
+                //double phi_0,
+                //double phi_n1,
                 double graphing_distance, 
                 double E,
                 double cutoff) {
-    
+    double phi_0 = 1;
+    double phi_n1 = 1;
 
     double del_x = graphing_distance/size;
     double phi_temp;
