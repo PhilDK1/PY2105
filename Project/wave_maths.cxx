@@ -11,60 +11,79 @@ using namespace std;
 #include <assert.h>
 
 
-
+// To test the area functions etc.
 // double * gen_test(double *Y, int size) {
 //     for (int i = 0; i < size; i++){
 //         Y[i] = i*i + 2i + 1
 //     }
 // }
 
+
+// function to calculate the square of the wavfunction
 double* square(
     double *wavefn,
     double *squared_wf,
     int size) {
     
-
+    // iterates the between 0 and size and multiples that value of the wavfn 
+    // by itself and assigns it to a new value in an array
     for (int i = 0; i < size; i++ ) {
         squared_wf[i]= wavefn[i]*wavefn[i];
     }
-
+    // returns the array of the wave function squared
     return squared_wf;
 }
 
+
+// function designed to check between +/-L and itegrate the wavefn between those valeus and return the area
 double integrate(
         double *sq_wf,
         double *X,
         double L,
         int size,
         double del_x) {
+    // intialise 2 counts, one for the left (count), and one for the right (upper)
+    // they will be used to get the index of =/- L
     int count = 0;
     int upper = 0;
-    // double Sum = 0;
+    
+    // incriment the count value until it exceeds -L, at this point the counter is 1 short
     while (X[count] < -L) {
         count++;
     }
+    // make up for the counter being one short
     count++;
 
+    // incriment the upper value until it exceed +L, at this point the counter is 1 above the correct value
     while (X[upper] < L) {
         upper++;
     }
+    // decriment the counter to get the index that gives a value less than +L
     upper--;
 
+
+    // initialise a value Sum to sum the following calulations
+    // below integration is using Simpson's 3/8ths rule
     double Sum = 0;
+    // initialise a variable for the ans
     double ans;
+    // sum first and last values who's coefficients by the 3/8th rule are 1
     Sum += sq_wf[count]+ sq_wf[upper];
 
+    // sum up every point who's index is not divisible by 3 and multiply by the correct coefficient (3)
     for (int i = count + 1; i < upper; i++) {
+        // check if i is divisible by 3 if not then 
         if (i % 3 != 0) {
             Sum += 3*(sq_wf[i]);
         }
 
     }
     
+    // sum up every point who's index is divisible by 3 and multiply by the correct coefficient (2)
     for (int i = count + 1; i < (upper/3); i++) {
         Sum += 2*(sq_wf[3*i]);
     }
-
+    // multply the sum by 3/8 * the width of a step
     ans = ((3*del_x)/(8))*Sum;
 
 
