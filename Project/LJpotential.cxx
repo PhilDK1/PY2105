@@ -20,6 +20,8 @@ using namespace std;
 
 // Lenard-Jones Potential function
 double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int size, double sigma, double epsilon) {
+    
+    
     // function to calculate the Lenard-Jones Potential for a range of points
 
     /*
@@ -27,17 +29,30 @@ double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int siz
     V(x) = 4e( (sigma/x)^(12) - (sigma/x)^(6) )
 
     */
-    double del_x = (endpoint - starting_x_nz)/size;   
+
+    // decalre del_x is the spacial step such that you have "size" number of steps between endpoint and starting_x_nz
+    double del_x = (endpoint - starting_x_nz)/size; 
+
+    // x is the current position i.e. x = x_0 +i*del_x kind of thing
     double x  = starting_x_nz;
+
+    // loop through each point from starting_x_nz
     for (int i = 0; i < size; i++) {
+        // assign the current calculated the position value, x = (x_0 + i*del_x)
         X[i] = x;
-        V[i] = 4*epsilon*((sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x) -(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x)*(sigma/x));
+        // calculate the potential at the point x
+        V[i] = 4*epsilon*(pow((sigma/x),12)  -pow((sigma/x), 6));
+        // calculate x for the next iteration
         x += del_x;
     }
-
+    // return the potential function
     return V;
 }
+
+
 /*
+
+// test the above functio
 int main() {
     int N = 10000;
     double end = 5;
@@ -51,7 +66,7 @@ int main() {
             cout << "hi 2" << endl;
 
     gnuplot_one_function("LJV", "linespoints", "x-axis", "V(x)", X, V, N);
-    gnuplot_one_function_jpg("Lenard-Jones Potential", "linespoints", "X-axis", "V(x)", X, V, N, "Lenard-Jones Potential function.jpg");
+    //gnuplot_one_function_jpg("Lenard-Jones Potential", "linespoints", "X-axis", "V(x)", X, V, N, "Lenard-Jones Potential function.jpg");
     return 0;
 }
 */
