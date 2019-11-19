@@ -84,11 +84,6 @@ int min(double *arr, int N){
     return min;
 }
 
-// void sub_transfer(string filename) {
-
-
-    
-// }
 
 double *scale(double *wavefn, double factor, int N){
     for (int i = 0; i < N; i++){
@@ -126,7 +121,6 @@ int main() {
     //     V[i] = -1.61;
     // }
 
-    // int index = min(V, N);
 
     gen_phi_right(wavefn, V, X, N, -1.6, x_r, x_0, end);
     gen_phi_left(wavfn, V, X, N, -1.6, x_l, x_0, end);
