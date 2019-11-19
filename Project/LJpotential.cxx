@@ -16,7 +16,7 @@ using namespace std;
 #include <stdlib.h>
 #include <stdarg.h>
 #include <assert.h>
-#include "gnuplot.cxx"
+// #include "gnuplot.cxx"
 
 // Lenard-Jones Potential function
 double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int size, double sigma, double epsilon) {
@@ -50,14 +50,15 @@ double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int siz
 }
 
 
-/*
 
-// test the above functio
+
+// test the above function
+/*
 int main() {
     int N = 10000;
-    double end = 5;
+    double end = 3;
     double V[N], X[N];
-    double x_0 = 0.9;
+    double x_0 = 0.95;
     double sig =1;
     double ep = 10;
 
@@ -66,7 +67,7 @@ int main() {
             cout << "hi 2" << endl;
 
     gnuplot_one_function("LJV", "linespoints", "x-axis", "V(x)", X, V, N);
-    //gnuplot_one_function_jpg("Lenard-Jones Potential", "linespoints", "X-axis", "V(x)", X, V, N, "Lenard-Jones Potential function.jpg");
+    gnuplot_one_function_jpg("Lenard-Jones Potential", "linespoints", "X-axis", "V(x)", X, V, N, "Lenard-Jones Potential function2.jpg");
     return 0;
 }
 */
