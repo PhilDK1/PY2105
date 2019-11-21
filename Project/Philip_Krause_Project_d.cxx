@@ -44,6 +44,33 @@ double* square(
     return squared_wf;
 }
 
+int locate_min(double *arr, int N){
+    int min = 0;
+    double min_val = arr[0];
+    for (int i = 0; i < N; i++) {
+        if (arr[i] <= min_val) {
+            min = i;
+            min_val = arr[i];
+        }
+    }
+    return min;
+}
+
+int indexing_left(double *X, double x_val, int size) {
+    for (int i = 0; i < size ; i++) {
+        if (x_val < X[i]) {
+            return i-1;
+        }    
+    }
+}
+
+int indexing_right(double *X, double x_val, int size) {
+    for (int i = 0; i < size ; i++) {
+        if (x_val > X[size - 1 -i]) {
+            return size - i;
+        }    
+    }
+}
 
 // function designed to check between +/-L and itegrate the wavefn between those valeus and return the area
 double integrate(
@@ -100,7 +127,38 @@ double integrate(
 
 }
 
-double bound_integral(double *func, double *X, double lower_bound, double upper_bound, int N){
+double bound_integral(double *func, 
+                      double *X, 
+                      double lower_bound, 
+                      double upper_bound, 
+                      int N) {
+    int l_index = indexing_left(X, lower_bound, N);
+    int r_index = indexing_left(X, upper_bound, N);
+    double del_x = X[1]- X[0];
+
+    // initialise a value Sum to sum the following calulations
+    // below integration is using Simpson's 3/8ths rule
+    double Sum = 0;
+    // initialise a variable for the ans
+    double ans;
+
+    Sum += func[l_index] + func[r_index];
+
+
+    for (int i = l_index + 1; i < r_index; i++) {
+        // check if i is divisible by 3 if not then 
+        if (i % 3 != 0) {
+            Sum += 3*(func[i]);
+        }
+
+    }
+    
+    // sum up every point who's index is divisible by 3 and multiply by the correct coefficient (2)
+    for (int i = l_index + 1; i < (r_index/3); i++) {
+        Sum += 2*(func[3*i]);
+    }
+    // multply the sum by 3/8 * the width of a step
+    ans = ((3*del_x)/(8))*Sum;
 
 }
 
@@ -162,3 +220,15 @@ int main() {
     return 0;
 }
 */
+double finite_derive(double *Y, double *X, int index) {
+    double del_x = abs(X[index] -  X[index + 1]);
+    double deriv = (Y[index+1]- Y[index])/del_x;
+    return deriv;
+}
+
+double *scale(double *wavefn, double factor, int N){
+    for (int i = 0; i < N; i++){
+        wavefn[i] = factor*wavefn[i];
+    }
+    return wavefn;
+}
