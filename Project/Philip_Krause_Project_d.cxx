@@ -4,7 +4,7 @@
     Project 9 Quantum Assignment
     testing for wave fn
 
-    File to contain amaths functions used for various things
+    File to contain maths functions used for various things
 */
 
 
@@ -50,12 +50,13 @@ double integrate(
         double *sq_wf,
         double *X,
         double L,
-        int size,
-        double del_x) {
+        int size) {
     // intialise 2 counts, one for the left (count), and one for the right (upper)
     // they will be used to get the index of =/- L
     int count = 0;
     int upper = 0;
+
+    double del_x = X[1]-X[0];
     
     // incriment the count value until it exceeds -L, at this point the counter is 1 short
     while (X[count] < -L) {
@@ -96,6 +97,10 @@ double integrate(
     // multply the sum by 3/8 * the width of a step
     ans = ((3*del_x)/(8))*Sum;
 
+
+}
+
+double bound_integral(double *func, double *X, double lower_bound, double upper_bound, int N){
 
 }
 

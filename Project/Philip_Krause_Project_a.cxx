@@ -73,7 +73,7 @@ int main() {
     for (int i = 0; i < N; i++) {
         norm_wf[i] = wavefn[i];
     }
-    double area = integrate(squared_function, X, L, N, del_x);
+    double area = integrate(squared_function, X, L, N);
     cout << "ans: " << area << endl;
     Normalise(norm_wf, area, N);
     
