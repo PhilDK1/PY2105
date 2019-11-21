@@ -20,28 +20,20 @@ using namespace std;
 #include <stdlib.h>
 #include <stdarg.h>
 #include <assert.h>
+#include "Philip_Krause_Project_d.cxx"
 #include "Philip_Krause_Project_e.cxx"
 #include "gnuplot.cxx"
 #include "Philip_Krause_Project_b.cxx"
 
-int indexing_left(double *X, double x_val, int size) {
-    for (int i = 0; i < size ; i++) {
-        if (x_val < X[i]) {
-            return i-1;
-        }    
-    }
-}
 
-int indexing_right(double *X, double x_val, int size) {
-    for (int i = 0; i < size ; i++) {
-        if (x_val > X[size - 1 -i]) {
-            return size - i;
-        }    
-    }
-}
 
 double *gen_phi_left(double *wavefn, double *V, double *X, int N, double E, double x_l, double start, double end){
     int ind = indexing_left(X, x_l, N);
+    cout << ind << endl;
+    while (ind < 2) {
+        x_l = 3*x_l;
+        ind = indexing_left(X, x_l, N);
+    }
     double del_x = (end - start)/N;
     wavefn[ind - 2] = -0.0001*del_x;
     wavefn[ind -1] = 0;
@@ -58,6 +50,11 @@ double *gen_phi_left(double *wavefn, double *V, double *X, int N, double E, doub
 
 double *gen_phi_right(double *wavefn, double *V, double *X, int N, double E, double x_r, double start, double end) {
     int ind = indexing_right(X, x_r, N);
+    cout << ind << endl;
+    while (ind < 2) {
+        x_r = 3*x_r;
+        ind = indexing_right(X, x_r, N);
+    }
     double del_x = (end - start)/N;
     wavefn[ind + 2] = -0.0001*del_x;
     wavefn[ind + 1] = 0;
@@ -71,33 +68,6 @@ double *gen_phi_right(double *wavefn, double *V, double *X, int N, double E, dou
 }
 
 
-
-
-int locate_min(double *arr, int N){
-    int min = 0;
-    double min_val = arr[0];
-    for (int i = 0; i < N; i++) {
-        if (arr[i] <= min_val) {
-            min = i;
-            min_val = arr[i];
-        }
-    }
-    return min;
-}
-
-
-double *scale(double *wavefn, double factor, int N){
-    for (int i = 0; i < N; i++){
-        wavefn[i] = factor*wavefn[i];
-    }
-    return wavefn;
-}
-
-double finite_derive(double *Y, double *X, int index) {
-    double del_x = abs(X[index] -  X[index + 1]);
-    double deriv = (Y[index+1]- Y[index])/del_x;
-    return deriv;
-}
 
 double *adjust(double *V, double *X, double *wavefn_1, double *wavefn_2, double *wave_function, int N, double init_E, double inc_E, double x_l, double x_r, double start, double end) {
     // find minium potential of on the range
@@ -181,8 +151,8 @@ int main() {
     double x_0 = 0.9;
 
     double V[N], X[N], wavefn[N], wavfn[N], wave_fn[N];
-    double x_r = end - 0.05;
-    double x_l = x_0 + 0.05;
+    double x_r = end - 0.005;
+    double x_l = x_0 + 0.005;
     // cout << indexing_right(X, x_r, N);
 
     // double x_0 = -point - 0.1;
