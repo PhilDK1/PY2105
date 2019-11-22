@@ -223,14 +223,14 @@ double *symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, doub
 
 int main() {
     int N = 10000;
-    double end = 5;
+    double end = 2;
     double Vstep = 4000;
     double mVstep = 100;
     double m_l = 0.25;
     double point = 1;
-    double x_0 = 0.9;
+    double x_0 = -2;
 
-    double V[N], X[N], wavefn[N], wavfn[N], wave_fn[N], square_fn[N];
+    double V[N], X[N], wavefn[N], wavfn[N], wave_fn[N], square_fn[N], sym_V[N];
     double x_r = end - 0.005;
     double x_l = x_0 + 0.005;
     // cout << indexing_right(X, x_r, N);
@@ -241,7 +241,7 @@ int main() {
     double ep = 10;
 
     LJV(V, X, x_0, end, N, sig, ep);
-    // mini_step(V, X, N, 1000, 4, 2, 20, 0.5);
+    mini_step(sym_V, X, N, 1000, 4, 2, 20, 0.5);
     // cout << indexing_right(X, x_r, N) << endl;
     // cout << indexing_left(X, x_l, N) << endl;
 
@@ -257,7 +257,8 @@ int main() {
     // scale(wavefn, 0.5, N);
     // scale(wavfn, 5, N);
 
-    non_symadjust(V, X, wavefn, wavfn, wave_fn, N, -1.6, 0.05, x_l, x_r, x_0, end);
+    // non_symadjust(V, X, wavefn, wavfn, wave_fn, N, -1.6, 0.05, x_l, x_r, x_0, end);
+    symadjust(sym_V, X, wavefn, wavfn, wave_fn, N, -2, 0.05, x_l, x_r, x_0, end);
     square(wave_fn, square_fn, N);
     double area = bound_integral(square_fn, X, x_l, x_r, N);
     Normalise(wave_fn , area, N);
