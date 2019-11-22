@@ -21,7 +21,6 @@ using namespace std;
 #include <stdarg.h>
 #include <assert.h>
 #include "Philip_Krause_Project_d.cxx"
-#include "Philip_Krause_Project_e.cxx"
 #include "gnuplot.cxx"
 #include "Philip_Krause_Project_b.cxx"
 
