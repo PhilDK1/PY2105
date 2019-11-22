@@ -159,7 +159,7 @@ double bound_integral(double *func,
     }
     // multply the sum by 3/8 * the width of a step
     ans = ((3*del_x)/(8))*Sum;
-
+    return ans;
 }
 
 
