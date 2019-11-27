@@ -18,6 +18,7 @@ using namespace std;
 #include <assert.h>
 
 // #include "gnuplot.cxx"
+
 /*  file to genereate potential function
     using pointers which are the easiest ways of returning an array
 
@@ -74,8 +75,20 @@ double* gen_v(  double* V,
 
 // Lenard-Jones Potential function
 double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int size, double sigma, double epsilon) {
+    /*
+    for the arguements
+        double* V, is the pointer to the memory address for an array of doubles which will serve as
+            the potenitial at a given point (as an array of potential for various points)
+        double* X, is the pointer to the memory addess for the x axis and is used to determine where
+            the potential stepts are located
+        double starting_x_nz, is the start point on the left
+        double endpoint, is the last point evalulated in the function
+        int size, the number of points
+        double sigma is the value for sigma as described by the lennard Jones function
+        double epsilon is the value for sigma as described by the lennard Jones function
     
-    
+
+    */
     // function to calculate the Lenard-Jones Potential for a range of points
 
     /*
@@ -106,11 +119,26 @@ double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int siz
 double *mini_step(double* V,
                 double* X, 
                 int size, 
-                double V_L,  
+                double V_L,
                 double graphing_distance, 
                 double L,
                 double mV_L,
                 double m_L){
+    /*
+    for the arguements
+        double* V, is the pointer to the memory address for an array of doubles which will serve as
+            the potenitial at a given point (as an array of potential for various points)
+        double* X, is the pointer to the memory addess for the x axis and is used to determine where
+            the potential stepts are located
+        int size, is the number of steps
+        double V_L, is the voltage at the point L
+        double graphing distance is the total distance that is graphed using gnuplot
+        double L, is the points at +/- L at which the voltage step corresponding to V_L occurs
+        double mV_L, is the small potential step height
+        double m_L, is the point at +/- m_L at which the potential step corresponding to mV_L occurs
+
+    
+    */
     // check that the graph contains the potential step, and isn't just graphing the potential of 0 inside +/-L
     if (abs(2*L) > graphing_distance) cout << "check points not all in range" << endl;
     
