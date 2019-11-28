@@ -18,9 +18,12 @@ using namespace std;
 #include <assert.h>
 #include "gnuplot.cxx"
 #include "Philip_Krause_Project_b.cxx"
-#include "Philip_Krause_Project_c.cxx"
+// #include "Philip_Krause_Project_c.cxx"
 #include "Philip_Krause_Project_d.cxx"
 
+
+
+/*
 const double pi = 3.14159265;
 const double sq_pi = pi * pi;
 
@@ -43,7 +46,8 @@ int main() {
     double squared_function[N];
     double norm_wf[N];
 
-    gen_v(V, X, N, Volt, graphing_distance, L);
+    // gen_v(V, X, N, Volt, graphing_distance, L);
+    mini_step(V, X, N, Volt, -2.5, 2.5, L, 0, 1);
     // gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
     gen_phi_odd(wavefn, V, X, N, graphing_distance, E[0], cutoff);
 
@@ -73,7 +77,7 @@ int main() {
     for (int i = 0; i < N; i++) {
         norm_wf[i] = wavefn[i];
     }
-    double area = integrate(squared_function, X, L, N);
+    double area = bound_integral(squared_function, X, -L, L, N);
     cout << "ans: " << area << endl;
     Normalise(norm_wf, area, N);
     
@@ -88,4 +92,4 @@ int main() {
 
 
     return 0;
-}
+}*/

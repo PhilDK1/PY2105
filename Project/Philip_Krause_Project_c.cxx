@@ -19,9 +19,9 @@ using namespace std;
 #include <stdarg.h>
 #include <assert.h>
 // #include "gnuplot.cxx"
-// #include "Philip_Krause_Project_b.cxx"
-
-//calculate fn, decides whether the function is diverging and adusts the cahgne in energy accordingly
+// #include "Philip_Krause_Project_d.cxx"
+/*
+//calculate fn, decides whether the function is diverging and adusts the change in energy accordingly
 double* calc(double *V, 
             double *X, 
             double *wavefn,
@@ -32,9 +32,27 @@ double* calc(double *V,
             double* del_E, 
             double cutoff) {
     
+    /*
+    for arguments
+        double* V, is the pointer to the memory address for an array of doubles which will serve as
+            the potenitial at a given point (as an array of potential for various points)
+        double* X, is the pointer to the memory addess for the x axis and is used to determine where
+            the potential stepts are located
+        double *wavefn, is the pointer to the memory address for an array of doubles where the 
+            wavefunction solutions is stored
+        int size, is the number of steps
+        double* last diverge is a pointer to the memory address to a double which tracks the 
+            direction of the previous divergence
+        double E_0, is a pointer to the location of the initial guess for energy which get changed
+        double graphing distance is the total distance that is graphed using gnuplot
+        del_E, is the pointer to the incriment by which the Energy is changed
+        double cutoff, is the variable to ehich the function checks if the wavefunction is diverging
+            beyond that and cuts off the wavefunction before it diverges to inifinity    
+    */
+    
     // printiting out the value of the diverging wave
     // cout << wavefn[size -5] << endl;
-
+/*
     // if-else if ladder to check various conditions and making decisions based on that
     if (last_diverge[0] == 0 && wavefn[size - 5] > 0) {
         // first iteration, diverging up, increase energy
@@ -60,7 +78,7 @@ double* calc(double *V,
     }
     // check the sign of the last divergence
     // if lessa than 0 and the absolute value is gr
-    if (wavefn[size - 5] < 0 /*&& abs(wavefn[size - 5]) > cutoff*/) {
+    if (wavefn[size - 5] < 0 && abs(wavefn[size - 5]) > cutoff) {
         last_diverge[0] = -1;
     } else {
         last_diverge[0] = 1;
@@ -80,13 +98,29 @@ double *gen_phi_even(double *wavefn,
                 double *V,
                 double *X,
                 int size,
-                //double phi_0,
-                //double phi_n1,
                 double graphing_distance, 
                 double E,
                 double cutoff) {
+
+    /*
+    for arguments
+        double* V, is the pointer to the memory address for an array of doubles which will serve as
+            the potenitial at a given point (as an array of potential for various points)
+        double* X, is the pointer to the memory addess for the x axis and is used to determine where
+            the potential stepts are located
+        double *wavefn, is the pointer to the memory address for an array of doubles where the 
+            wavefunction solutions is stored
+        int size, is the number of steps
+        double* last diverge is a pointer to the memory address to a double which tracks the 
+            direction of the previous divergence
+        double E, is the initial guess for the energy
+        double graphing distance is the total distance that is graphed using gnuplot
+        double cutoff, is the variable to ehich the function checks if the wavefunction is diverging
+            beyond that and cuts off the wavefunction before it diverges to inifinity    
+    */
     // for a symmetric even parity wave the initial conditions are always
     // these conditions are 1, 1, corresponging to phi(x) and d/dx(phi(x))
+/*
     double phi_0 = 1;
     double phi_n1 = 1;
 
@@ -223,12 +257,7 @@ double *gen_phi_odd(double *wavefn,
         mid = size -1;
         mid = (mid/2);
     }
-    /*
-    wavefn[mid] = 2*phi_0 - phi_n1 - 2*del_x*del_x*(E - V[mid-1])*phi_0;
-    wavefn[mid - 1] = -2*wavefn[mid] + phi_0 + 2*del_x*del_x*(E - V[mid])*wavefn[mid];
-    wavefn[mid + 1] = 2*wavefn[mid] - wavefn[mid-1] - 2*del_x*del_x*(E - V[mid])*wavefn[mid];
-    */
-    
+        
     wavefn[mid] = phi_0;
     wavefn[mid - 1] = -phi_n1;
     wavefn[mid + 1] = phi_n1;
@@ -243,6 +272,7 @@ double *gen_phi_odd(double *wavefn,
                 // divering up
                 for (int n = 0; n < (mid - i); n++)
                 {
+                // stop loop and set all values to the cut off
                 wavefn[mid + i + n] = 2.5;
                 }
                 break;
@@ -250,6 +280,7 @@ double *gen_phi_odd(double *wavefn,
                 // divering down
                 for (int n = 0; n < (mid - i); n++)
                 {
+                // stop loop and set all values to the cut off
                 wavefn[mid + i + n] = -2.5;
                 }
                 break;
@@ -270,6 +301,7 @@ double *gen_phi_odd(double *wavefn,
                 // divering up
                 for (int n = 0; n < (mid - i); n++)
                 {
+                // stop loop and set all values to the cut off
                     wavefn[mid - i - n] = 2.5;
                 }
                 break;
@@ -277,6 +309,7 @@ double *gen_phi_odd(double *wavefn,
                 // divering down
                 for (int n = 0; n < ( mid -i); n++)
                 {
+                // stop loop and set all values to the cut off
                 wavefn[mid - i - n] = -2.5;
                 }
                 break;
@@ -288,6 +321,200 @@ double *gen_phi_odd(double *wavefn,
 
 
     return wavefn;
+}
+
+double *gen_phi_left(double *wavefn, double *V, double *X, int N, double E, double x_l, double start, double end){
+    int ind = indexing_left(X, x_l, N);
+        double offset =abs(start - x_l);
+    while (ind < 2) {
+        x_l += 2*offset;
+        ind = indexing_left(X, x_l, N);
+    }
+
+    double del_x = (end - start)/N;
+    // cout << del_x << endl;
+    // cout << abs(del_x) << endl;
+    wavefn[ind - 2] = -0.0001*abs(del_x);
+    wavefn[ind -1] = 0;
+
+    for (int i = 0; i < N- ind; i++) {
+        wavefn[ind +i] = 2*wavefn[ind +i -1] -wavefn[ind + i -2] - 2*del_x*del_x*(E- V[ind +i -1])*wavefn[ind +i -1];
+        // cout << i << "      " << wavefn[ind +i] << "    " << (wavefn[ind +i] - wavefn[ind +i -1]) << "      " << V[ind +i -1] << endl;
+    }
+
+
+    return wavefn;
+}
+
+
+double *gen_phi_right(double *wavefn, double *V, double *X, int N, double E, double x_r, double start, double end) {
+    int ind = indexing_right(X, x_r, N);
+    cout << ind << endl;
+    while (ind < 2) {
+        x_r = 3*x_r;
+        ind = indexing_right(X, x_r, N);
+    }
+    double del_x = (end - start)/N;
+    // cout << del_x << endl;
+    // cout << abs(del_x) << endl;
+    wavefn[ind + 2] = -0.0001*abs(del_x);
+    wavefn[ind + 1] = 0;
+
+    for (int i = 0; i <= ind; i++) {
+        wavefn[ind-i] = 2*wavefn[ind-(i -1)] - wavefn[ind-(i-2)] -2*del_x*del_x*(E-V[ind-(i-1)])*wavefn[ind-(i-1)];
+    }
+
+    return wavefn;
+
+}
+
+
+
+double *non_symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, double *wave_function, int N, double init_E, double inc_E, double x_l, double x_r, double start, double end) {
+    // find minium potential of on the range
+    int minimum = locate_min(V, N);
+    double tolerance = ((end - start)/N)*((end - start)/N)*((end - start)/N)*((end - start)/N);
+    // cout << tolerance << endl;
+    gen_phi_left(wavefn_1, V, X, N, init_E, x_l, start, end);
+    // cout << "left" << endl;
+    gen_phi_right(wavefn_2, V, X, N, init_E, x_r, start, end);
+    gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+    double E = init_E;
+    double ratio = (wavefn_1[minimum]/wavefn_2[minimum]);
+    // cout << ratio<< endl;
+    scale(wavefn_2, ratio, N);
+    gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+    int match = 1;
+    double diff = finite_derive(wavefn_1, X, minimum) - finite_derive(wavefn_2, X, minimum); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
+    // cout << diff << endl;
+
+    int count = 1;
+    int ans;
+    if (diff >0 ) {
+        match = 1;
+
+    }else if (diff <0) {
+        match = -1;
+    }
+
+    while (abs(diff) > tolerance) {
+        cout << count << endl;
+        if ((match == 1) && (diff >0)){
+            // energy needs to increase
+            // cout << "1   1  " << E << endl;
+            E = E + inc_E;
+            // cout << E << endl;
+        } else if ((match == 1) && (diff <0)) {
+            // increased last time so needs to decrease
+            inc_E  = inc_E/2;
+            // cout << "1  -1  " << E << endl;
+            E = E - inc_E;
+            // cout << E << endl;
+            match = -1;
+        } else if ((match == -1) && (diff >0)) {
+            // decreased last time needs to increase
+            inc_E  = inc_E/2;
+            // cout << "-1  1  " << E << endl;
+            E = E + inc_E;
+            // cout << E << endl;
+            match = 1;
+        } else if ((match == -1) && (diff <0)) {
+            // energy needs to decrease
+            // cout << "-1 -1  " << E << endl;
+            E = E - inc_E;
+            // cout << E << endl;
+        }
+        gen_phi_left(wavefn_1, V, X, N, E, x_l, start, end);
+        gen_phi_right(wavefn_2, V, X, N, E, x_r, start, end);
+        ratio = (wavefn_1[minimum]/wavefn_2[minimum]);
+        scale(wavefn_2, ratio, N);
+        diff = finite_derive(wavefn_1, X, minimum) - finite_derive(wavefn_2, X, minimum); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
+        count++;
+        // gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+        // cin >> ans;
+    }
+    for (int i = 0; i < N; i++) {
+        if (i <= minimum) {
+            wave_function[i] = wavefn_1[i];
+        } else {
+            wave_function[i] = wavefn_2[i];
+        }
+    }
+
+}
+
+double *symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, double *wave_function, int N, double init_E, double inc_E, double x_l, double x_r, double start, double end) {
+    // find minium potential of on the range
+    // int minimum = locate_min(V, N);
+    int mid = N/2;
+    double tolerance = ((end - start)/N)*((end - start)/N)*((end - start)/N)*((end - start)/N);
+    // cout << tolerance << endl;
+    gen_phi_left(wavefn_1, V, X, N, init_E, x_l, start, end);
+    // cout << "left" << endl;
+    gen_phi_right(wavefn_2, V, X, N, init_E, x_r, start, end);
+    gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+    double E = init_E;
+    double ratio = (wavefn_1[mid]/wavefn_2[mid]);
+    // cout << ratio<< endl;
+    scale(wavefn_2, ratio, N);
+    gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+    int match = 1;
+    double diff = finite_derive(wavefn_1, X, mid) - finite_derive(wavefn_2, X, mid); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
+    // cout << diff << endl;
+
+    int count = 1;
+    int ans;
+    if (diff >0 ) {
+        match = 1;
+
+    }else if (diff <0) {
+        match = -1;
+    }
+
+    while (abs(diff) > tolerance) {
+        cout << count << endl;
+        if ((match == 1) && (diff >0)){
+            // energy needs to increase
+            // cout << "1   1  " << E << endl;
+            E = E + inc_E;
+            // cout << E << endl;
+        } else if ((match == 1) && (diff <0)) {
+            // increased last time so needs to decrease
+            inc_E  = inc_E/2;
+            // cout << "1  -1  " << E << endl;
+            E = E - inc_E;
+            // cout << E << endl;
+            match = -1;
+        } else if ((match == -1) && (diff >0)) {
+            // decreased last time needs to increase
+            inc_E  = inc_E/2;
+            // cout << "-1  1  " << E << endl;
+            E = E + inc_E;
+            // cout << E << endl;
+            match = 1;
+        } else if ((match == -1) && (diff <0)) {
+            // energy needs to decrease
+            // cout << "-1 -1  " << E << endl;
+            E = E - inc_E;
+            // cout << E << endl;
+        }
+        gen_phi_left(wavefn_1, V, X, N, E, x_l, start, end);
+        gen_phi_right(wavefn_2, V, X, N, E, x_r, start, end);
+        ratio = (wavefn_1[mid]/wavefn_2[mid]);
+        scale(wavefn_2, ratio, N);
+        diff = finite_derive(wavefn_1, X, mid) - finite_derive(wavefn_2, X, mid); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
+        count++;
+        // gnuplot_two_functions("test plot", "lines", "X", "phi", X, wavefn_1, N, "left", X, wavefn_2, N, "right");
+        // cin >> ans;
+    }
+    for (int i = 0; i < N; i++) {
+        if (i <= mid) {
+            wave_function[i] = wavefn_1[i];
+        } else {
+            wave_function[i] = wavefn_2[i];
+        }
+    }
+
 }
 
 

@@ -120,7 +120,8 @@ double *mini_step(double* V,
                 double* X, 
                 int size, 
                 double V_L,
-                double graphing_distance, 
+                double start,
+                double end,
                 double L,
                 double mV_L,
                 double m_L){
@@ -140,12 +141,12 @@ double *mini_step(double* V,
     
     */
     // check that the graph contains the potential step, and isn't just graphing the potential of 0 inside +/-L
-    if (abs(2*L) > graphing_distance) cout << "check points not all in range" << endl;
+    if ((-L < start)|| (L > end)) cout << "check points not all in range" << endl;
     
     //calculate the space step del_x
-    double del_x = graphing_distance/size;
+    double del_x = (end-start)/size;
     //calculate the start point (left)
-    double starting = -0.5*graphing_distance;
+    double starting = start;
 
     // Generate the function X axis and the potential steps
     for (int i = 0; i < size; i++) {
@@ -171,8 +172,8 @@ double *mini_step(double* V,
     return V, X;
 }
 
-
 /*
+
 // runing the file to see if it all worked
 
 int main() {
@@ -191,7 +192,7 @@ int main() {
 
     // use function
     // gen_v(V, X, N, V_at_step_l, V_at_step_r, distance, -point, point);
-    mini_step(V, X, N, V_at_step_l, distance, point, mVstep, m_l);
+    mini_step(V, X, N, V_at_step_l, -2.5, 2.5, point, 0, 1);
 
     // plot function
     gnuplot_one_function("Test of potential generation", "linespoints", "x", "V", X, V, N);
@@ -199,7 +200,6 @@ int main() {
 }
 
 */
-
 /*
 int main() {
     int N = 10000;
