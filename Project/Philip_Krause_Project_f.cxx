@@ -138,7 +138,6 @@ double non_symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, d
     int match = 1;
     // calculate the difference in derivatives
     double diff = finite_derive(wavefn_1, X, minimum) - finite_derive(wavefn_2, X, minimum); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
-    // initialise count for loop
     // check if the differnce is positive or negative
     if (diff >0 ) {
         match = 1;
@@ -187,7 +186,7 @@ double non_symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, d
             wave_function[i] = wavefn_2[i];
         }
     }
-    // square teh wave function
+    // square the wave function
     square(wave_function, square_fn, N);
     // get the area of the squared wave function
     double area = bound_integral(square_fn, X, x_l, x_r, N);
@@ -205,19 +204,24 @@ double non_symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, d
 
 
 double symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, double *wave_function, int N, double init_E, double inc_E, double x_l, double x_r, double start, double end) {
-    // find minium potential of on the range
+    // find mid point of on the range
     int mid = N/2;
+    // set the tolerance as the spacial step to the 4th power
     double tolerance = ((end - start)/N)*((end - start)/N)*((end - start)/N)*((end - start)/N);
+    // generate the wavefunction from the left and the right side
     gen_phi_left(wavefn_1, V, X, N, init_E, x_l, start, end);
     gen_phi_right(wavefn_2, V, X, N, init_E, x_r, start, end);
+    // transfer energy to a new variable
     double E = init_E;
+    // get the ratio of heights between the two wave functions when the potential is minimum
     double ratio = (wavefn_1[mid]/wavefn_2[mid]);
+    // scale one of the wave functions so they are equal when potential is minimum
     scale(wavefn_2, ratio, N);
+    // initialise variable to check difference in derivaties
     int match = 1;
+    // calculate the difference in derivatives
     double diff = finite_derive(wavefn_1, X, mid) - finite_derive(wavefn_2, X, mid); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
-
-    int count = 1;
-    int ans;
+    // check if the differnce is positive or negative
     if (diff >0 ) {
         match = 1;
 
@@ -225,6 +229,7 @@ double symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, doubl
         match = -1;
     }
 
+    // check if the difference in the derivatives of the functions is within the tolerance and adjust energy
     while (abs(diff) > tolerance) {
         // cout << count << endl;
         if ((match == 1) && (diff >0)){
@@ -244,25 +249,35 @@ double symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, doubl
             // energy needs to decrease
             E = E - inc_E;
         }
+        // generate the wave functions
         gen_phi_left(wavefn_1, V, X, N, E, x_l, start, end);
         gen_phi_right(wavefn_2, V, X, N, E, x_r, start, end);
+        // get the ratio of heights between the two wave functions when the potential is minimum
         ratio = (wavefn_1[mid]/wavefn_2[mid]);
+        // scale so they are equal at a point
         scale(wavefn_2, ratio, N);
+        // calculate the difference in the derivatives
         diff = finite_derive(wavefn_1, X, mid) - finite_derive(wavefn_2, X, mid); // >0 then d_phi_l/dx > d_phi_r/dx else l<r
-        count++;
     }
+    // loop throught the two wave functions and combine them into one continuous function
     for (int i = 0; i < N; i++) {
+        // left wave function while less than the mid point
         if (i <= mid) {
             wave_function[i] = wavefn_1[i];
+        // right wave function while greater than the mid point
         } else {
             wave_function[i] = wavefn_2[i];
         }
     }
+    // initialise the array for the squared wave funciton
     double square_fn[N];
+    // square the wave function
     square(wave_function, square_fn, N);
+    // get the area of the squared wave function
     double area = bound_integral(square_fn, X, x_l, x_r, N);
+    // normalise the wave function
     Normalise(wave_function , area, N);
 
-
+    // return the energy
     return E;
 }
