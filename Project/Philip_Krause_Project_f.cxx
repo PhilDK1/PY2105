@@ -21,15 +21,12 @@ using namespace std;
 #include <stdarg.h>
 #include <assert.h>
 #include "Philip_Krause_Project_d.cxx"
-// #include "Philip_Krause_Project_e.cxx"
 #include "gnuplot.cxx"
 #include "Philip_Krause_Project_b.cxx"
 
 // int mid(N);
 
-double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int size, double sigma, double epsilon) {
-    // cout << "hi" << endl;
-    
+double *LJV(double *V, double *X, double starting_x_nz, double endpoint, int size, double sigma, double epsilon) {    
     // function to calculate the Lenard-Jones Potential for a range of points
 
     /*
@@ -102,8 +99,6 @@ double *gen_phi_right(double *wavefn, double *V, double *X, int N, double E, dou
     return wavefn;
 
 }
-
-
 
 double non_symadjust(double *V, double *X, double *wavefn_1, double *wavefn_2, double *wave_function, int N, double init_E, double inc_E, double x_l, double x_r, double start, double end) {
     // find minium potential of on the range
@@ -314,7 +309,7 @@ void LJVsequence(double init_E, double epsilon, double sigma){
     char LenJon[100];
     sprintf(LenJon, "Lennard-Jones epsilon = %.1lf, sigma = %.1lf, (scaled to fit graph)", epsilon, sigma);
 
-    gnuplot_two_functions("Wave function for non symmetric potential", "lines", "X axis", "Wavefunction Amplitude", X, wave_fn, N, title , X, V, N, LenJon);
+    gnuplot_two_functions("Wave function for non symmetric potential", "linespoints", "X axis", "Wavefunction Amplitude", X, wave_fn, N, title , X, V, N, LenJon);
     gnuplot_one_function_jpg("Wave function for non symmetric potential", "lines", "X axis", title, X, wave_fn, N, file);
 }
 
@@ -372,8 +367,8 @@ void barrier_sequence(double energy){
 
     // gnuplot_two_functions_jpg("Wave function for non symmetric potential", "lines", "X axis", "Wavefunction Amplitude", X, wavefn, N, "wavefunction (right)", X, wavfn, N, "wavefunction (left)", "Lennard_Jones_Potential_Wavefunction.jpg");
     char title[100];
-    sprintf(title, "Wavefunction for small potential barrier E = %.5lf, potential outside = %.1lf, barrier", Energy[0]);
-    gnuplot_one_function(title, "lines", "X", "phi", X, wave_fn, N);
+    sprintf(title, "Wavefunction for small potential barrier E = %.5lf, potential outside = %.1lf, barrier potential = %.1lf", Energy[0], Vstep, mVstep);
+    gnuplot_one_function(title, "linespoints", "X", "phi", X, wave_fn, N);
     char file[100];
     sprintf(file, "Wavefunction for small potential barrier E = %.5lf.jpg", Energy[0]);
     gnuplot_one_function_jpg(title, "lines", "X", "Phi(x)", X, wave_fn, N, file);
@@ -381,6 +376,10 @@ void barrier_sequence(double energy){
     // gnuplot_two_functions("sdf", "lines", "X", "phi", X, wave_fn, N,"wavefn" , X, V, N-100, "potential");
     // gnuplot_one_function("LJV", "linespoints", "x", "V", X, V,N);
 }
+
+
+
+
 
 /*
 int main() {
@@ -457,6 +456,6 @@ int main() {
 int main() {
     barrier_sequence(2);
     barrier_sequence(9);
-    // LJVsequence(-1.6, 10, 1);
+    LJVsequence(-1.6, 10, 1);
     return 0;
 }

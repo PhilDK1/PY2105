@@ -190,48 +190,6 @@ double *Normalise(double *wavefn, double area, double size) {
 }
 
 
-/*
-int main() {
-    int N = 50000;
-    double V[N], X[N], wavefn[N], dupl[N];
-    double graphing_distance = 5;
-    double E[1];
-    E[0]= 4;
-    double del_E[1];
-    del_E[0] = 1;
-    double cutoff = 2.5;
-    double lVstep = 1000;
-    double rVstep = 1000;
-    double VStepPoint_l = -1;
-    double VstepPoint_r = 1;
-    double last_diverge[1];
-    last_diverge[0] = 0;
-    double del_x = graphing_distance/N;
-    double squared_function[N];
-    double ans;
-
-    gen_v(V, X, N, lVstep, rVstep, graphing_distance, VStepPoint_l, VstepPoint_r);
-    gen_phi_odd(wavefn, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
-    gen_phi_odd(dupl, V, X, N, 0, -del_x, graphing_distance, E[0], cutoff);
-
-    square(wavefn, squared_function, N);
-    ans = integrate(squared_function, X, VStepPoint_l, VstepPoint_r, N, del_x);
-
-    cout << ans << endl;
-
-    Normalise(dupl, ans, N);
-    square(dupl, squared_function, N);
-    ans = integrate(squared_function, X, VStepPoint_l, VstepPoint_r, N, del_x);
-
-    cout << ans << endl;
-    gnuplot_two_functions("wf & sqwf", "linespoints", "X", "value", X, wavefn, N, "yurt", X, dupl, N, "norm");
-
-
-
-
-    return 0;
-}
-*/
 double finite_derive(double *Y, double *X, int index) {
     double del_x = abs(X[index] -  X[index + 1]);
     double deriv = (Y[index+1]- Y[index])/del_x;
