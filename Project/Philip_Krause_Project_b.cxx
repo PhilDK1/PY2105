@@ -116,31 +116,3 @@ double *mini_step(double* V,
     return V, X;
 }
 
-
-/*
-// runing the file to see if it all worked
-
-int main() {
-    // define variables and assign values
-
-    int N = 1001;
-    double V_at_step_l = 4000;
-    double V_at_step_r = 4000;
-    double mVstep = 100;
-    double m_l = 0.25;
-    double point = 1;
-    double distance = 3;
-    double del_x = distance/N;
-    double X[N], V[N], Index[N];
-
-
-    // use function
-    // gen_v(V, X, N, V_at_step_l, V_at_step_r, distance, -point, point);
-    mini_step(V, X, N, V_at_step_l, distance, point, mVstep, m_l);
-
-    // plot function
-    gnuplot_one_function("Test of potential generation", "linespoints", "x", "V", X, V, N);
-    return 0;
-}
-
-*/

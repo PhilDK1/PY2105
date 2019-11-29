@@ -21,12 +21,6 @@ using namespace std;
 #include <assert.h>
 
 
-// To test the area functions etc.
-// double * gen_test(double *Y, int size) {
-//     for (int i = 0; i < size; i++){
-//         Y[i] = i*i + 2i + 1
-//     }
-// }
 
 
 // function to calculate the square of the wavfunction

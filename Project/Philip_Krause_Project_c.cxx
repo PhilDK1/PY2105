@@ -4,7 +4,8 @@
     Project 9 Quantum Assignment
     testing for wave fn
 
-    File to generate wave functions for symmetrical potentials
+    File to generate wave functions for symmetrical potentials as well as generating the wave function 
+    for odd and even parity solutions for a square well using shooting method
 */
 
 // Header Files
@@ -80,8 +81,6 @@ double *gen_phi_even(double *wavefn,
                 double *V,
                 double *X,
                 int size,
-                //double phi_0,
-                //double phi_n1,
                 double graphing_distance, 
                 double E,
                 double cutoff) {
@@ -202,8 +201,6 @@ double *gen_phi_odd(double *wavefn,
                 double *V,
                 double *X,
                 int size,
-                //double phi_0,
-                //double phi_n1,
                 double graphing_distance, 
                 double E,
                 double cutoff) {
@@ -227,13 +224,8 @@ double *gen_phi_odd(double *wavefn,
     wavefn[mid] = 2*phi_0 - phi_n1 - 2*del_x*del_x*(E - V[mid-1])*phi_0;
     wavefn[mid - 1] = -2*wavefn[mid] + phi_0 + 2*del_x*del_x*(E - V[mid])*wavefn[mid];
     wavefn[mid + 1] = 2*wavefn[mid] - wavefn[mid-1] - 2*del_x*del_x*(E - V[mid])*wavefn[mid];
-    // wavefn[mid - 1] = 2*wavefn[mid] - wavefn[mid + 1] - 2*del_x*del_x*(E - V[mid])*wavefn[mid];
     
-    /*
-    wavefn[mid] = phi_0;
-    wavefn[mid - 1] = -phi_n1;
-    wavefn[mid + 1] = phi_n1;
-    */
+    
     
     for (int i = 2; i < mid; i++) {
         phi_temp = 2*wavefn[mid+i-1] - wavefn[mid+i-2] - 2*del_x*del_x*(E - V[mid+i-1])*wavefn[mid+i-1];
@@ -290,24 +282,3 @@ double *gen_phi_odd(double *wavefn,
 
     return wavefn;
 }
-
-
-/*
-
-int main() {
-    int N = 10000;
-    double wavefn[N], X[N], V[N];
-    double graphing_distance = 4;
-    double E[1];
-    E[0] = 4;
-    double cutoff = 2.5;
-    gen_v(V, X, N, 10000, graphing_distance, 1);
-
-
-    gen_phi_odd(wavefn, V, X, N, graphing_distance, E[0], cutoff);
-
-    gnuplot_one_function("test", "linespoints", "x", "phi", X, wavefn, N);
-
-    return 0;
-}
-*/
