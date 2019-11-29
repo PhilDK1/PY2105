@@ -17,7 +17,6 @@ using namespace std;
 #include <stdarg.h>
 #include <assert.h>
 
-// #include "gnuplot.cxx"
 /*  file to genereate potential function
     using pointers which are the easiest ways of returning an array
 
@@ -27,12 +26,10 @@ using namespace std;
         double* X, is the pointer to the memory addess for the x axis and is used to determine where
             the potential stepts are located
         int size, the number of points
-        double lV_step, the potential step on the left hand side
-        double rV_step, the potential step on the right hand side
+        double V_L, the potential step on either side
         double graphing_distance, the length of the ranges of x axis that will be plotted +/- half
             of the value
-        double l_step_at, the x coord where the potential step is on the left
-        double r_step_at, the x coord where the potential step is on the right
+        double L, the =/-x coord where the potential step is on either side
 */
 double* gen_v(  double* V,
                 double* X, 
@@ -72,6 +69,7 @@ double* gen_v(  double* V,
     return V, X;
 }
 
+
 double *mini_step(double* V,
                 double* X, 
                 int size, 
@@ -80,6 +78,14 @@ double *mini_step(double* V,
                 double L,
                 double mV_L,
                 double m_L){
+    /*
+    args as in "gen_v" but with addition of,
+
+    double mV_L, the mini potential step (barrier)
+    double m_L, the +/- x coord, between which the barrier is located
+    */
+
+
     // check that the graph contains the potential step, and isn't just graphing the potential of 0 inside +/-L
     if (abs(2*L) > graphing_distance) cout << "check points not all in range" << endl;
     
@@ -109,10 +115,6 @@ double *mini_step(double* V,
 
     }
     // return the 2 arrays (not sure if this is required but it works so i didn't mess around with it)
-
-
-
-
     return V, X;
 }
 
