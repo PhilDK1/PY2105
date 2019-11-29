@@ -38,52 +38,77 @@ double* square(
     return squared_wf;
 }
 
+// function to locate the minimum value of an array and return the index
 int locate_min(double *arr, int N){
+    // assume index of min value is the initial one
     int min = 0;
+    // store that ^^ value
     double min_val = arr[0];
+    // loop through and check for smaller values
     for (int i = 0; i < N; i++) {
         if (arr[i] <= min_val) {
+            // if value small update smallest value's index
             min = i;
+            // and the actual value
             min_val = arr[i];
         }
     }
+    // return the min val's index
     return min;
 }
 
+
+// function to locate the maximum value of an array and return the index
 int locate_max(double *arr, int N){
+    // assume index of max value is the initial one
     int max = 0;
+    // store that ^^ value
     double max_val = arr[0];
+     // loop through and check for bigger values
     for (int i = 0; i < N; i++) {
         if (arr[i] >= max_val) {
+            // if value small update biggest value's index
             max = i;
+            // and the actual value
             max_val = arr[i];
         }
     }
+    // return the max val's index
     return max;
 }
  
+ // function that returns the index or an array (strictly increasing) of the closest value small than a given value
 int indexing_left(double *X, double x_val, int size) {
+    // loop through values
     for (int i = 0; i < size ; i++) {
+        // check if value of array is bigger
         if (x_val < X[i]) {
+            // if it is return previous index
             return i-1;
         }    
     }
 }
 
+// function that returns the index or an array (strictly decreasing right -> left) of the closest value bigger than a given value
 int indexing_right(double *X, double x_val, int size) {
+    // loop through values
     for (int i = 0; i < size ; i++) {
+        // check if value of array is smaller
         if (x_val > X[size - 1 -i]) {
+            // if it is then return previous value checked
             return size - i;
         }    
     }
 }
 
-// function designed to check between +/-L and itegrate the wavefn between those valeus and return the area
+// function designed to check between +/-L and itegrate the wavefn between those values and return the area
+// uses Simpson's 3/8ths rule
 double integrate(
         double *sq_wf,
         double *X,
         double L,
         int size) {
+
     // intialise 2 counts, one for the left (count), and one for the right (upper)
     // they will be used to get the index of =/- L
     int count = 0;
@@ -133,13 +158,17 @@ double integrate(
 
 }
 
+
+// function to integrate using Simpson's 3/8ths rule between two bounds
 double bound_integral(double *func, 
                       double *X, 
                       double lower_bound, 
                       double upper_bound, 
                       int N) {
+    // gets left and right indexs using functions above
     int l_index = indexing_left(X, lower_bound, N);
     int r_index = indexing_left(X, upper_bound, N);
+    // gets the spacial step
     double del_x = X[1]- X[0];
 
     // initialise a value Sum to sum the following calulations
@@ -147,7 +176,7 @@ double bound_integral(double *func,
     double Sum = 0;
     // initialise a variable for the ans
     double ans;
-
+    // add on the values at start and end
     Sum += func[l_index] + func[r_index];
 
 
@@ -183,16 +212,23 @@ double *Normalise(double *wavefn, double area, double size) {
     return wavefn;
 }
 
-
+// get the derivative of a funciton using the definition of the deriviative, but with a finite step
 double finite_derive(double *Y, double *X, int index) {
+    // get's the spacial step at the point
     double del_x = abs(X[index] -  X[index + 1]);
+    // gets the change of the height of the funciton and divides by the finitie step
     double deriv = (Y[index+1]- Y[index])/del_x;
+    // returns value
     return deriv;
 }
 
+
+// scales the function by a constant factor
 double *scale(double *wavefn, double factor, int N){
     for (int i = 0; i < N; i++){
+        // let each point equal its previous value multiplied by a factor
         wavefn[i] = factor*wavefn[i];
     }
+    // return the new wave funciton
     return wavefn;
 }

@@ -22,7 +22,7 @@ using namespace std;
 // #include "gnuplot.cxx"
 // #include "Philip_Krause_Project_b.cxx"
 
-//calculate fn, decides whether the function is diverging and adusts the cahgne in energy accordingly
+// calculate fn, decides whether the function is diverging and adusts the cahgne in energy accordingly
 double* calc(double *V, 
             double *X, 
             double *wavefn,
@@ -72,11 +72,7 @@ double* calc(double *V,
 
 }
 
-// double integrate(double *wavefn,
-//                  double *X,
-//                  )
-
-
+// function to generate the even parity wave function for a given energy
 double *gen_phi_even(double *wavefn,
                 double *V,
                 double *X,
@@ -205,14 +201,17 @@ double *gen_phi_odd(double *wavefn,
                 double E,
                 double cutoff) {
     
-    // calculate 
+    // calculate the the spacial step
     double del_x = graphing_distance/size;
+
+    // for an odd parity wave the initial conditions are always
+    // these conditions are 0, -del_x, corresponging to phi(x) and d/dx(phi(x))
     double phi_0 = 0;
     double phi_n1 = -del_x;
 
-
+    // value to use as an intermidate to check if the funciton is diverging
     double phi_temp;
-
+    // get the mid point index
     int mid;
     if (size % 2 == 0) {
         mid = (size/2);
@@ -220,31 +219,40 @@ double *gen_phi_odd(double *wavefn,
         mid = size -1;
         mid = (mid/2);
     }
-    
+    // initial conditions
     wavefn[mid] = 2*phi_0 - phi_n1 - 2*del_x*del_x*(E - V[mid-1])*phi_0;
     wavefn[mid - 1] = -2*wavefn[mid] + phi_0 + 2*del_x*del_x*(E - V[mid])*wavefn[mid];
     wavefn[mid + 1] = 2*wavefn[mid] - wavefn[mid-1] - 2*del_x*del_x*(E - V[mid])*wavefn[mid];
     
     
-    
+    // loop to go from middle to right calculating wavefunction
     for (int i = 2; i < mid; i++) {
+        //store answer as the temporary answer to check if diverging
         phi_temp = 2*wavefn[mid+i-1] - wavefn[mid+i-2] - 2*del_x*del_x*(E - V[mid+i-1])*wavefn[mid+i-1];
+        // if not above +/- the cutoff
         if (abs(phi_temp) < cutoff) {
+            // store the answer as the next value
             wavefn[mid + i] = phi_temp;
+        // it is diverging
         } else {
+            // check direction of divergence
             if (phi_temp > 0) {
                 // divering up
+                // loop through rest of the right side and set = +cutoff
                 for (int n = 0; n < (mid - i); n++)
                 {
-                wavefn[mid + i + n] = 2.5;
-                }
+                    wavefn[mid + i + n] = 2.5;
+                }// break out of loop
                 break;
+            // check direction of divergence
             } else if (phi_temp <  0) {
                 // divering down
+                // loop through rest of the right side and set = -cutoff
                 for (int n = 0; n < (mid - i); n++)
                 {
-                wavefn[mid + i + n] = -2.5;
+                    wavefn[mid + i + n] = -2.5;
                 }
+                // break out of loop
                 break;
             }
             
@@ -253,25 +261,36 @@ double *gen_phi_odd(double *wavefn,
         
     }
 
-    
+    // loop to go from middle to left calculating wavefunction
     for (int i = 2; i < mid+2; i++) {
+        //store answer as the temporary answer to check if diverging
         phi_temp = 2*wavefn[mid - i + 1] - wavefn[mid - i + 2] - 2*del_x*del_x*(E - V[mid - i + 1])*wavefn[mid - i + 1];
+        // if not above +/- the cutoff
         if (abs(phi_temp) < cutoff) {
+            // if not above +/- the cutoff
+            // store the answer as the next value
             wavefn[mid - i] = phi_temp;
         } else {
+            // check direction of divergence
             if (phi_temp > 0) {
                 // divering up
+                // loop through rest of the right side and set = +cutoff
+
                 for (int n = 0; n < (mid - i); n++)
                 {
                     wavefn[mid - i - n] = 2.5;
                 }
+                // break out of loop
                 break;
+            // check direction of divergence
             } else if (phi_temp <  0) {
                 // divering down
+                // loop through rest of the right side and set = -cutoff
                 for (int n = 0; n < ( mid -i); n++)
                 {
                 wavefn[mid - i - n] = -2.5;
                 }
+                // break out of loop
                 break;
             }
         }
@@ -279,6 +298,6 @@ double *gen_phi_odd(double *wavefn,
     }
 
 
-
+    // return wave function
     return wavefn;
 }
