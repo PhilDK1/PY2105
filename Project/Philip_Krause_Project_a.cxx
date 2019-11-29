@@ -119,7 +119,7 @@ void even_squence(double energy){
     char prompt;
     while (cont) {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
-        cout << "E is: " << E[0] << endl;
+        // cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
         gen_phi_even(wavefn, V, X, N, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
@@ -136,6 +136,8 @@ void even_squence(double energy){
         count++;
 
     }
+    cout << "E is: " << E[0] << endl;
+    cout << "\n\n\n\n" << endl;
     square(wavefn, squared_function, N);
     for (int i = 0; i < N; i++) {
         norm_wf[i] = wavefn[i];
@@ -186,7 +188,7 @@ void odd_squence(double energy){
     char prompt;
     while (cont) {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
-        cout << "E is: " << E[0] << endl;
+        // cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
         gen_phi_odd(wavefn, V, X, N, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
@@ -203,6 +205,8 @@ void odd_squence(double energy){
         count++;
 
     }
+    cout << "E is: " << E[0] << endl;
+    cout << "\n\n\n\n" << endl;
     square(wavefn, squared_function, N);
     for (int i = 0; i < N; i++) {
         norm_wf[i] = wavefn[i];
