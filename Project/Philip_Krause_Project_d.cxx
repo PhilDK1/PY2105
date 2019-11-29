@@ -56,6 +56,18 @@ int locate_min(double *arr, int N){
     return min;
 }
 
+int locate_max(double *arr, int N){
+    int max = 0;
+    double max_val = arr[0];
+    for (int i = 0; i < N; i++) {
+        if (arr[i] >= max_val) {
+            max = i;
+            max_val = arr[i];
+        }
+    }
+    return max;
+}
+ 
 int indexing_left(double *X, double x_val, int size) {
     for (int i = 0; i < size ; i++) {
         if (x_val < X[i]) {
