@@ -117,13 +117,15 @@ void even_squence(double energy){
     bool cont = true;
     int count = 0;
     char prompt;
+    char title[70];
     while (cont) {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
         // cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
         gen_phi_even(wavefn, V, X, N, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
-            gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
+            sprintf(title, "Even Wave Function with Energy = %.5lf", E[0]);
+            gnuplot_one_function(title, "linespoints", "X", "phi", X, wavefn, N);
             cout << "Continue: ";
         
             cin >> prompt;
@@ -149,7 +151,7 @@ void even_squence(double energy){
 
 
     char filename[35];
-    char title[70];
+    
 
     sprintf(filename, "plot of Even Wave function E=%.5lf norm.jpg", E[0]);
     sprintf(title, "Even Wave Function with Energy = %.5lf and normalised wavefunction", E[0]);
@@ -186,14 +188,16 @@ void odd_squence(double energy){
     bool cont = true;
     int count = 0;
     char prompt;
+    char title[70];
     while (cont) {
         calc(V, X, wavefn, N, last_diverge, graphing_distance, E, del_E, cutoff);
         // cout << "E is: " << E[0] << endl;
         cout << "del E is: " << del_E[0] << endl;
         gen_phi_odd(wavefn, V, X, N, graphing_distance, E[0], cutoff);
         if (count % 50 == 0) {
-            gnuplot_one_function("Wave Function", "linespoints", "X", "phi", X, wavefn, N);
-            cout << "Continue: ";
+            sprintf(title, "Odd Wave Function with Energy = %.5lf", E[0]);
+            gnuplot_one_function(title, "linespoints", "X", "phi", X, wavefn, N);
+            cout << "Continue: (Y: Yes, N:No)";
         
             cin >> prompt;
             switch (prompt) {
@@ -218,7 +222,7 @@ void odd_squence(double energy){
 
 
     char filename[35];
-    char title[70];
+    // char title[70];
 
     sprintf(filename, "plot of odd Wave function E=%.5lf norm.jpg", E[0]);
     sprintf(title, "Odd Wave Function with Energy = %.5lf and normalised wavefunction", E[0]);
